@@ -1,4 +1,4 @@
-# taxonomy_automaton_NASA_AI
+# AI_NASA_taxonomy
 
 Aerospace Research Line Classifier
 📋 Overview
