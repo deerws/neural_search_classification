@@ -1,0 +1,916 @@
+1.Computational Fluid Dynamics
+1.1.Physical modelling (turbulent, reactive flows...)
+1.2.Development of numerical schemes and algorithms
+1.3.Development and production of CFD software
+1.4.Validation of CFD software
+1.5.Grid generation and adaptation
+1.6.High Performance computing (vector and parallel processing)
+1.7.Complex CFD applications
+2.Unsteady Aerodynamics
+2.1.Wind tunnel testing; Aeroelasticity
+2.2.Flow separation
+2.3.Rotor aerodynamics
+2.4.Buffeting
+2.5.Flutter
+2.6.Shock wave-boundary layer inter-action
+2.7.Buzz
+2.8.Surging
+2.9.Rotating stall
+3.Airflow control
+3.1.Computational Fluid Dynamics
+3.2.Wind Tunnel Testing
+3.3.Drag reduction
+3.4.Laminar flow
+3.5.Transition/turbulence
+3.6.MEMS
+3.7.Vortex generator
+3.8.Wing tip device
+3.9.Synthetic jet
+3.10.Blowing flap
+3.11.Bump riblet
+4.High Lift Devices
+4.1.Computational Fluid Dynamics
+4.2.Wind Tunnel Testing
+4.3.Multi-surface airfoil
+4.4.Leading edge flap; trailing edge flap
+4.5.Noise reduction
+4.6.Wake vortex
+4.7.Air traffic management
+4.8.Certification Requirements
+5.Wing Design
+5.1.Computational Fluid Dynamics
+5.2.Wind Tunnel Testing
+5.3.Drag reduction
+5.4.Wing tip device
+5.5.Multidisciplinary optimisation
+5.6.Flexible wing
+5.7.Noise reduction
+6.Aerodynamics of External and Removable items
+6.1.Computational Fluid Dynamics
+6.2.Wind Tunnel Testing
+6.3.Aerodynamic noise
+6.4.Unsteady flow
+6.5.Radar signature
+6.6.Landing Gear
+6.7.Flight / Ground Tests
+6.8.Pod
+7.Wind Tunnel Testing/Technology
+7.1.Model design/manufacturing
+7.2.On-line data acquisition/reduction systems
+7.3.Wind tunnel flow conditioning
+7.4.Full or semi-span model common techniques
+7.5.Airframe/propulsion integration: air intakes, nozzles/afterbodies, motorised nacelles, propellers, helicopter rotors, stealth.
+7.6.Flow/surface flow survey: by intrusive and/or non intrusive means.
+7.7.Specific techniques such as: Aeroacoustics, Aeroelasticity/flutter, Jettison (free drop & captive trajectory), Ground effect, Dynamic derivatives, Heat transfer (hypersonic).
+8.Wind Tunnel Measuring Techniques
+8.1.Pressure: (un)steady pressures, Pitot/multihole probes, PSP (Pressure Sensitive Paints).
+8.2.Temperature and heat flux: Infrared Thermography, thermocouples, hot wire, hot film.
+8.3.Velocity: LDV (Laser Doppler Velocimetry), PIV (Particle Image Velocimetry), DGV (Doppler Global Velocimetry).
+8.4.Flow visualisation: Schlieren technique, shadowgraphy, laser tomoscopy, Rayleigh scattering, interferometry.
+8.5.Surface visualisation: oil film, mini-tufts, infrared or sublimation transition detection.
+8.6.Forces, moments: strain-gage balances (6-component or local loads).
+8.7.Model attitude/deformation: potentiometers, accelerometers, photogrammetry, moiré.
+9.Computational Acoustics
+9.1.Noise source modelling
+9.2.Numerical simulation of acoustic propagation.
+10.External Noise prediction
+10.1.Turbofan or turbojet engines
+10.2.Helicopter turboshaft engines
+10.3.Propeller (high speed and general aviation)
+10.4.Helicopter rotors (main rotor, tail rotor)
+10.5.Airframe-generated noise (high lift devices, landing gears)
+10.6.Installation effects of engines
+10.7.Sonic boom of supersonic aircraft includes ARDEP Sub domain NOIS of ENV domain
+11.Metallic Materials & basic processes
+11.1.Superalloys
+11.2.Aluminium alloys
+11.3.Titanium aluminides
+11.4.New weldable alloys
+11.5.Coatings
+11.6.Oxidation, corrosion
+11.7.Assembling processes
+11.8.Repairing processes
+11.9.Microscopical analyses
+11.10.Chemical analyses
+11.11.Mechanical testing
+12.Non-Metallic Materials & basic processes
+12.1.Carbide and nitride of silicon
+12.2.Organometallic precursors of ceramics (alkoxides and organosilicon polymers)
+12.3.Organic precursors of carbon (PAN, pitch)
+12.4.Glass and glass-ceramics
+12.5.Silica
+12.6.Cordierite
+12.7.Metallic sulphides and fluorides
+12.8.Polyethylene
+12.9.Aramid, glass
+12.10.Carbon and boron nitride nanotubes
+12.11.Thermal barrier coatings
+12.12.Piezoelectric
+13.Composite Materials & basic processes
+13.1.CMC: matrices (carbide and nitride of silicon, glass-ceramics, carbon); fibres (silicon carbide, carbon, oxide) and fillers (silicon carbide).
+13.2.OMC: matrices (thermosetting resins, thermoplastic polymers, thermostables and elastomers); reinforcement by fibres (carbon, polyethylene, polyaramide, glass, plant fibres) and by particles (mineral, nanotubes).
+13.3.MMC: matrices (conventional titanium alloys, titanium aluminides, nickel-based superalloys, aluminium and magnesium alloys); fibres (silicon carbide, alumina, carbon) and particles (carbides).
+13.4.Elaboration processes.
+13.5.Repairing processes.
+14.Advanced Manufacturing Processes & Technologies
+14.1.Flexible Manufacturing
+14.2.Robotics
+14.3.Composite components
+14.4.Fibre-metal laminates
+14.5.Ribbon Organised Wiring
+14.6.High speed machining: metal parts
+14.7.Fabrication simulation: all kind of manufacturing processes to reduce start up time
+14.8.Welding technologies
+14.9.Friction stir welding: metal structures
+14.10.Laser beam welding: metal structures
+14.11.Explosive forming
+14.12.Advanced castings
+14.13.Super plastic forming: metal structures, in particular titanium
+14.14.Resin transfer moulding: composite structures
+14.15.Tau placement: automated fibre placement, composite structures
+14.16.Thermo-plastics: composite structures
+14.17.Riveted Joint
+14.18.Bonded Joint
+14.19.Conformal antennas
+15.Structural Analysis and Design
+15.1.Metallic Material constitutive laws (linear elasticity, plasticity, viscolelasticity)
+15.2.Composite laws (linear and non-linear domains)
+15.3.Numerical methods (finite element, solving methods)
+15.4.Composite and multilayer structure modelling
+15.5.Static Stress analysis with damage and failure criteria
+15.6.Fatigue behaviour analysis with crack initiation and propagation
+15.7.Multi-scale modelling methods for CMC, OMC and MMC materials
+15.8.Buckling (linear and non-linear approaches) for metallic components
+15.9.Buckling for composite structures with or without stiffener
+15.10.Post-buckling (crack initiation and delamination propagation)
+15.11.Assembling modelling (rivets, bonding, FSW techniques,..)
+15.12.Optimisation methods
+16.Aero-elasticity
+16.1.Static aeroelasticity: Linear and non linear structure, Steady aerodynamic, Static deformation, Static divergence, Aeroelastic optimisation.
+16.2.Dynamic aeroelasticity: Structural dynamic (linear and non linear), Unsteady aerodynamic (linear and non linear), Fluid structure coupling, Fluid structure systems coupling, Flutter, Forced response.
+16.3.Numerical aeroelasticity: Unsteady aerodynamic, Stability and response prediction, Aeroelastic optimisation, (multidisciplinary optimisation), Aeroelastic model updating, Aero-servo-elasticity.
+16.4.Experimental aeroelasticity: Unsteady aerodynamic, Flutter model (design, manufacture, ground testing, wind tunnel testing).
+16.5.Aeroelastic Certification: Ground vibration test, Flutter flight test.
+17.Buckling, Vibrations and Acoustics
+17.1.Structural dynamic modelling: Material modelling (viscoelastic media, composites, multilayer structure); Numerical method( (Analytical, Finite Element analysis), Statistic Energy Analysis); Linear and non linear analysis; Damping modelling; Structure internal fluid interaction (sloshing).
+17.2.Multibody dynamics modelling: Kinematics and dynamics of rigid and flexible components
+17.3.Stress Waves in Solids: Waves propagation
+17.4.Structural Model updating
+17.5.Dynamic Structural optimisation
+17.6.Shocks and vibrations: Transient response, Low frequency range, Medium and high frequency ranges
+17.7.Random Vibrations in Structural Mechanics: Linear and non-linear systems, Random excitation (turbulence, noise, acoustic)
+17.8.Experimental Methods in Vibrations: Vibration properties of materials, Vibration technique in non- destructive testing, Systems excitations, transducers, Data acquisition, Signal processing and analysis, 1.8- Experimental Modal Analysis, FRF measurements
+17.9.Material properties: Homogeneous material, composites, viscoelastic media, multilayer, etc.; Acoustic material
+17.10.Modelling: Analytical approaches, Finite element analysis, Boundary Element analysis, Statistic Energy Analysis
+17.11.Sound Structure Interaction: Acoustic propagation, Acoustic radiation, Acoustic transmission through structures, Acoustic reflection from elastics structures, Acoustic excitation, Acoustic fatigue, Structure and fluid damping
+17.12.Experimental Identification
+18.Smart Materials and Structures
+18.1.Constitutive laws (metallic and composite materials)
+18.2.Experimental static component behaviour
+18.3.Non-linear characterisation with and without temperature environment
+18.4.Buckling testing
+18.5.Diffusitivity measurements (thermal properties. NDT)
+18.6.Electrical and electromagnetic properties measurements (NDT)
+18.7.Optical properties (NDT)
+18.8.X Ray radiography (NDI)
+18.9.Ultrasounds with and without contact (Air coupled or laser)
+18.10.Eddy Current (NDI)
+18.11.Thermography method (NDI)
+18.12.Optical techniques (holography, shearography, Moire)
+19.Internal Noise prediction
+19.1.Material properties: Homogeneous material, heterogeneous structure, Composite material, viscoelastic media, multilayer, etc., Acoustic material, porous material, Material optimisation.
+19.2.Modelling: Analytical approaches, Finite element analysis, Boundary Element Analysis, Statistic Energy Analysis, Energy diffusion;
+19.3.Excitation sources: mechanic, aerodynamic, acoustic; Acoustic propagation, Acoustic radiation, Acoustic transmission through structures, Acoustic reflection from elastics structures.
+19.4.Experimental Identification.
+20.Helicopter Aero-acoustics
+20.1.main rotor noise
+20.2.tail rotor noise
+20.3.turboshaft engine noise
+20.4.discrete frequency noise related to periodic aerodynamic phenomena The nuisance from helicopter rotors is very much increased when a certain type of discrete frequency noise called "helicopter rotor impulsive noise" occurs. This "impulsive noise" includes Blade Vortex Interaction (BVI) noise in descent and low-to-medium level flight and High Speed Impulsive noise (HSI).
+20.5.broadband noise, mainly due to interactions between rotating components (rotor and compressor blades) with incoming turbulence.
+21.Noise Reduction
+21.1.Active Control algorithms
+21.2.Techniques in relation with actuators and sensors such as piezoelectric or piezoceramic materials, electrostrictive ceramics... and their mechanical modellisation.
+21.3.Automatics and real time systems for the study and for the realisation of controllers
+21.4.Optimisation of the location of patches on the structures
+21.5.Modal identification of structures
+21.6.Knowledge of noise sources and identification of acoustic leaks
+21.7.Acoustic measurements for the validation of Active Control
+21.8.Optimisation of aerodynamic and acoustic performance through new design of fan blade and vanes, advanced propellers (possibly uneven spaced), and helicopter rotors.
+21.9.Novel aircraft designs to mask some sources, or to alleviate installation effects (interactions) on noise generation.
+21.10.New concepts of passive or adaptive materials
+21.11.Extensions to high temperatures on the exhaust duct
+21.12.Noise abatement procedures
+22.Ac	oustic Measurements and Test Technology
+22.1.Sensors and transducers: condenser microphone, loudspeakers, acoustic driver, accelerometer, sound intensity probe, smart transducer, pistonphone, DLV
+22.2.Units: physical units (Pa, dB), psychoacoustical units (dBA, PNdB, EPNdB, Leq,...)
+22.3.Common measurements: calibration, absorption, convection, refraction, reverberation, near-field and far- field, intensimetry
+22.4.Machinery and airframe noise measurements: anechoïc room, reverberation chamber, wind tunnel, flight tests, internal and external noise
+22.5.Noise source localisation and ranging: microphone array, acoustic mirror
+22.6.Acoustic signal recording and processing: narrow band frequency analysis, third octave and octave bands, correlations, random noise, impulsive noise
+22.7.Certification procedures
+22.8.Acoustic detection
+22.9.Active noise control
+23.Aircraft Security
+23.1.Flight deck barrier devices (e.g. impenetrable cockpit doors)
+23.2.Bomb-proof cargo containers (to contain effects of explosions)
+24.Performance
+24.1.compressor: pressure ratio, efficiency, resistance to distortion, stall margin, active control, number of stages
+24.2.turbine: efficiency, cooling, number of stages
+24.3.combustion: efficiency, stability, ignition, extinction, instabilities, active control, gaseous emissions, soots
+24.4.the complete engine: thrust, specific thrust, weight, dimensions, specific consumption, emission indices, noise
+24.5.lifetime
+24.6.maintenance constraints
+24.7.cost
+25.Turbomachinery / Propulsion Aerodynamics
+25.1.Computational Fluid Dynamics
+25.2.Wind Tunnel Testing
+25.3.Tip clearance effect
+25.4.Heating flux
+25.5.surging
+25.6.Rotating stall
+26.Combustion
+26.1.combustion efficiency
+26.2.injection: atomisation, vaporisation
+26.3.chemical kinetics
+26.4.turbulent combustion modelling
+26.5.radiative transfers
+26.6.stability
+26.7.ignition, extinction
+26.8.instabilities
+26.9.active control
+26.10.auto-ignition and flash-back
+26.11.gaseous emissions
+26.12.soots
+26.13.catalytic combustion
+26.14.diagnostics
+27.Air-breathing propulsion
+27.1.Computational Fluid Dynamics
+27.2.Intakes
+27.3.Propeller, propfans, turbojets, turbofan
+27.4.Wind Tunnel Testing
+27.5.Noise reduction
+27.6.Radar signature
+27.7.Buzz
+27.8.Icing
+27.9.Ingestion
+28.Heat Transfer
+28.1.turbulence
+28.2.rotating flows
+28.3.radiation
+28.4.diagnostics
+29.Nozzles, Vectored Thrust, Reheat
+29.1.Computational Fluid Dynamics
+29.2.Wind Tunnel Testing
+29.3.Noise Reduction
+29.4.Silencer
+29.5.Afterbody
+29.6.Flow separation
+29.7.Infrared Signature
+30.Engine Controls
+30.1.Engine modelling
+30.2.Engine control systems
+31.Auxiliary Power Unit
+31.1.Increasing power per kilogram, decreasing fuel consumption, reducing costs through various ways
+31.2.Integration of APU in the broader platform system optimisation
+32.Fuels and Lubricants
+32.1.lubricate rotating parts such as bearings and gears, to limit wear and friction
+32.2.evacuate the heat generated between these rotating parts
+33.Test Bench Calibration
+33.1.the energy loss due to the boundary layers in the vicinity of the test cell walls
+33.2.the heterogeneity of the flow field upstream the engine inlet
+33.3.the aerodynamic forces on the mechanical system maintaining the engine
+34.Engine Health Monitoring
+34.1.Increase in the sophistication of on-board and ground-based engine monitoring and maintenance systems
+35.Experimental Facilities and Measurement Techniques
+35.1.Measurements of temperatures and concentrations
+35.2.Velocity measurements
+36.Computational Methods
+36.1.Physical modelling (turbulent, heat transfer, reactive flows, two-phase flows, radiative medium...)
+36.2.Unsteady flows, vortex flows, aeroacoustics
+36.3.Development of numerical schemes and algorithms
+36.4.Code coupling, multi-physics, multi-scale simulations
+36.5.Development and production of software
+36.6.Validation of software, model characterisation
+36.7.Grid generation and adaptation
+36.8.High Performance computing (vector and parallel processing)
+36.9.Complex applications, system analysis, control
+37.Emissions pollution
+37.1.chemical kinetics
+37.2.turbulent combustion
+37.3.atmosphere physico-chemistry
+37.4.diagnostics
+37.5.species transport and dispersion
+38.Hydrogen in Aviation
+38.1.Fuel Cell Propulsion & H2 Direct Combustion Systems
+38.2.Storage and Distribution Systems for Liquid Hydrogen
+38.3.Hydrogen-Critical Materials Performance
+38.4.New Standards and Certification Procedures
+38.5.Auxiliary Systems and Refuelling Procedures
+38.6.Structural Integration of Tanks
+38.7.Fuel Supply Systems
+38.8.Ground and Flight Test Demonstrations
+39.Hybrid Electric Flight
+39.1.Hybrid Electric Architectures & Technologies
+39.2.Distributed Propulsion
+39.3.Design Methodologies
+39.4.New Configurations
+39.5.Synergetic Integration
+39.6.Regulatory Aspects
+40.Avionics
+40.1.Cockpit Automation:
+40.2.Airborne Separation Assurance System:
+40.3.ACAS Automation and Use:
+40.4.Flight Management Systems
+41.Cockpit Systems, Visualisation & Display Systems
+41.1.Cockpit indicators and gauges
+41.2.Cockpit switch panels
+41.3.Cockpit display panels. CRT, flat panel, touch screen, head-up displays
+41.4.Display issues. readability in different lighting situations, resolution, contrast, viewing angle
+41.5.Reduction in weight, power and cooling requirements
+41.6.Increased reliability
+41.7.Integration with flight management and navigation systems (EFIS, ACARS, ATSU)
+41.8.Glass cockpit
+42.Navigation / Flight Management / Autoland
+42.1.RF-based aircraft navigation and guidance systems (e.g. VOR, ILS, MLS, LORAN, TACAN, ADF, DME, NDB)
+42.2.Satellite-based aircraft navigation and guidance systems (e.g. GPS, differential GPS, GLONASS)
+42.3.Inertial navigation systems
+42.4.Digital altitude control systems (radar altimeters etc)
+42.5.System interfaces, data flows and analysis. 3D FMS< 4D FMS, flight database
+42.6.Inspection, adjustment, performance testing, malfunction analysis and corrective
+42.7.Automatic landing systems. autoland, low visibility approach and landing, precision approach, tactical decision tools
+42.8.Enhanced vision systems, pattern recognition and data fusion
+42.9.Synthetic 3D vision with terrain and obstacle information and visualisation, automatic warnings to crew if flight path intersects with terrain
+43.Warning Systems
+43.1.Sensors. ground collision avoidance (GPWS)
+43.2.Sensors. airborne collision avoidance systems (ACAS)
+43.3.Alerting systems (audio, warning lights, displays. map view, profile view, 3D perspective view)
+43.4.Integrated terrain awareness and warning systems
+43.5.Turbulence warning. windshear, wake vortex, clear air turbulence
+43.6.Ground and airborne detection of meteorological icing conditions
+43.7.Integration of airborne detection with atmospheric data received from outside the aircraft for real-time crew information and for transmission to other users
+43.8.False alarm reduction
+44.Electronics & Microelectronics for on-board systems
+44.1.New materials
+44.2.Power, weight and cooling requirement reductions
+44.3.Reliability increase
+44.4.Component and system interfaces and architectures
+44.5.MEMS
+45.Sensors integration
+45.1.Integrated modular avionics
+45.2.System interfaces and architectures
+45.3.Algorithm development, testing and validation
+45.4.Application to navigation, aircraft status and flight data systems
+46.Flight Data/Flight Recording
+46.1.Cockpit voice recorder (CVR). recording technology
+46.2.CVR sensors (microphones)
+46.3.CVR. reconstruction tools and algorithms
+46.4.Flight data recorder (FDR). recording technology
+46.5.FDR. sensors
+46.6.FDR. reconstruction tools and algorithms
+46.7.Passenger cabin recording equipment
+47.Communications Systems
+47.1.Radio communication systems (HF, VHF, UHF, AM/FM), analogue and digital
+47.2.Integration of communications systems
+47.3.Communications systems architecture (including routers, WANs and gateways)
+47.4.Reductions in power requirements, weight reduction
+47.5.Communication systems components. waveguides, antennas
+47.6.Data transmission. datalinks (VHF datalink, air-air datalink, broadcast datalink), telemetry, ACARS
+47.7.On-board intercom systems
+47.8.Satellite communications. voice, datalinks, communications integration
+48.Identification
+48.1.IFF transponders (selective integration, Mode S, Mode S subnetwork, Mode S SARPS, Mode 5)
+48.2.Non-co-operative identification (JEM etc)
+49.Avionics Integration
+49.1.Functional verification
+49.2.Integration testing
+49.3.Maintenance of integrated avionics system
+49.4.Operational characteristics of integrated avionics systems
+50.Optics - Optronics - Lasers - Image processing and data fusion
+50.1.System interfaces and architectures
+50.2.Reductions in power, weight and cooling requirements
+50.3.Integration with avionics
+50.4.Radar data processing (RDP)
+50.5.Sources of surveillance data
+50.6.Optics sensors. enhanced vision sensors, light intensifiers, solid state lasers, MOEMS (Micro electro- optical mechanical systems)
+50.7.Nano technologies
+50.8.Signal processing
+50.9.High bandwidth data transmission
+50.10.Data fusion. architectures, algorithms, validation
+51.Electronic Library System
+51.1.Collection and digitisation of data
+51.2.Data management
+51.3.Data display (laptops, PDAs, tablet/slate PCs)
+51.4.System characteristics (e.g. physical robustness to harsh operating environment)
+51.5.Connectivity and ground infrastructure issues
+51.6.IT associated tools (e.g. virtual reality) for enhanced maintenance support
+52.Aircraft health and usage monitoring system
+52.1.Application of prognostic health management to improve condition-based maintenance
+52.2.HUMS sensors. characteristics, interfaces, management, scheduling and self-monitoring
+52.3.Data management. storage, archiving, retrieval, analysis
+52.4.Integration of diagnostic and prognostic systems
+53.Smart maintenance systems
+53.1.Autonomous logistics. anticipatory maintenance and repair
+53.2.Provisions of information to maintenance staff
+53.3.Reductions in logistics and maintenance support requirements
+53.4.Automated logging of system and sub-system performance
+53.5.System interfaces and architectures
+53.6.Self-healing and self-repairing systems and materials
+53.7.Maintenance monitoring systems
+53.8.Failure tolerant systems
+53.9.Computer-based maintenance support and training, methods and materials
+54.Lighting systems
+54.1.Lighting technologies. LED, incandescent, fluorescent, high-density discharge, electro-luminescent
+54.2.Operational considerations. power requirements, reliability, flexibility in installation and operation, reduction in maintenance requirements
+54.3.Safety considerations. robustness, redundancy
+54.4.Lighting types. ambient cabin, task cabin (reading etc), information and guidance, safety, flight-deck, external anti-collision
+55.Aircraft Security
+55.1.Systems and procedures for identification and access of personnel to the flight deck
+55.2.On-board explosives detection systems
+55.3.Alarm systems (e.g. panic alarms for cabin staff, seatback phones for passengers)
+55.4.Cockpit security monitoring systems (voice recorders, video surveillance etc)
+55.5.Passenger cabin security monitoring systems (voice recorders, video surveillance etc)
+55.6.Security systems deployed by armed sky marshals
+55.7.Tamper-proof and multiply-redundant transponder systems
+55.8.Modified collision and terrain-avoidance systems (to prevent aircraft from being crashed deliberately)
+55.9.Modified automatic landing systems (to enable forced landing of aircraft by ground authorities after it has been hijacked)
+56.Electrical Power Generation, Distribution & Actuation
+56.1.System components. generators, alternators, converters, inverters, batteries, circuit protection (circuit breakers, current limiters, automatic bus transfer), wiring, connectors, control systems, measuring instruments, warning indicators
+56.2.System characteristics. power quality, isolation, reliability, interface standardisation
+56.3.Issues. electrical load analysis, power quality testing, installation assessment, distribution and load management
+56.4.Integration and validation of technologies
+56.5.Elecromechanical actuation (EMA) - Flight control systems
+57.Pneumatic systems
+57.1.Components. LP air cylinders, pressure gauges and warning lights, pipework, valves and fittings, filters, seals
+57.2.Design. tools to support modelling for dynamic performance analysis
+57.3.Interfaces with other aircraft systems
+58.Passenger and freight systems
+58.1.Passenger seats - configurations (side-facing, rear-facing, bed-seats), comfort (suppression of vibration etc), ergonomic design, safety crash worthiness, integration of value-added services
+58.2.In-flight cabin systems - electronic business/office systems, airline information, flight information/interactive maps, internet access, telephone access, audio/video and other multimedia services on demand, video surveillance monitoring and recording
+58.3.Restraints - airbags, seat belts, child restraints, analysis of operational effectiveness
+58.4.Safety systems - lightweight breathing systems, smoke hoods, evacuation systems (slides etc)
+58.5.Cargo systems - loading, handling, restraining, monitoring, integration
+59.Environmental control System
+59.1.Provision of fresh air - bleed air, ozone converter, air conditioning/cooling packs (heat exchangers, turbines, compressors, air mix chambers)
+59.2.Air filters - activated charcoal, HEPA, filter status monitoring
+59.3.Exhaust of cabin air - pressure control, outflow valves
+59.4.Recirculation system - CO, CO2 monitoring and removal
+59.5.Temperature, humidity control
+59.6.Cabin ventilation and ducting system - flow patterns analysis, tools and modelling, zonal distribution, avoidance of draughts and stagnant areas
+59.7.Control systems - status indicators, parameter level and system warning indicators, manual regulators for emergency use
+59.8.Air quality monitoring and analysis - development of comfort index
+59.9.Ground operations of ECS - APU, external air conditioning units
+59.10.Personal climate control facilitation (temperature, airflow, humidity)
+60.Water and waste systems
+60.1.Fresh water systems - storage, tank capacity, distribution system and flow rate, pressure system, disinfection (chlorine, anodic oxidation), ground handling interface - filling and emptying
+60.2.Grey water - disposal system (heating, in-flight spraying)
+60.3.Toilets - reliability, maintainability, technologies (recirculation, vacuum), storage and disposal of waste
+60.4.Plumbing - pipework, valves, fittings, filters
+60.5.Cabin waste - solid/semi-solid/liquid, storage, compaction, avoidance of smells
+60.6.Ground handling interface
+61.Fuel systems
+61.1.Storage - tank location, design, construction
+61.2.Distribution systems - pipes, valves, isolation systems, pumps
+61.3.Management system - level indicators, actuators, control system
+61.4.Refuelling and defuelling systems
+61.5.Safety issues - fire protection measures, electrical bonding straps and jumpers
+62.Landing gear and braking systems
+62.1.Landing gear - configuration and design, shock absorption (active and passive damping), load control systems, control theory aspects, power demand, corrosion protection
+62.2.Wheels - construction, design (main and nose wheels)
+62.3.Tyres - construction, design, temperature and pressure sensors and monitoring, operation under loads, wear prediction
+62.4.Braking system - materials (carbon, steel), anti-skid systems (integrated brake monitoring, anti-skid valves, brake management systems), automatic braking systems, temperature sensors and monitoring systems, accumulators, pressure transducers
+62.5.Steering system - nosewheel steering
+63.Fire protection systems
+63.1.Passive protection - fireblocking layer on materials (e.g. cabin seats), fire-resistant fittings, floor coverings and non-structural applications
+63.2.Detection systems - smoke (back-scattering, optical attenuation), fire (gas sensing, near IR, IR), overheat, hot air leakage
+63.3.Fire suppression - halon, watermist/nitrogen flooding, environmental impact, piping, valves, on-board inert gas generation systems, hand-held extinguishing systems
+63.4.Control systems - maintenance panels, cockpit display panels, visualisation of system status, audible alerts, design (zonal configuration, redundancy, reliability, systems research, analysis of operational incidents), BITE
+64.Hydraulic systems
+64.1.Hydraulic circuit design
+64.2.Hydraulic fluid and its conditioning
+64.3.Flight control actuation - Servo hydraulic actuators (SHA), Electro-hydrostatic actuators (EHA), and non-conventional systems
+65.Open-loop Aircraft Stability Analysis
+65.1.System identification - from empirical / analytical model parameter estimation, wind tunnel tests and flight tests.
+65.2.Mathematical modelling - equations of motion, aerodynamics, mass properties and geometry, taking into account modelling errors and uncertainties).
+65.3.Analytical analysis of stability and stability margins - including a sensitivity analysis to determine the most influential physical parameters.
+65.4.Flight Tests - experimental analysis of stability and natural motion of the aircraft, including model validation, definition of suitable test manoeuvres, instrumentation.
+66.Flight control system
+66.1.System Identification
+66.2.Mathematical modelling
+66.3.Definition of controller requirements and desired handling criteria
+66.4.Controller design - control theory (architecture, algorithms, robustness)
+66.5.Thrust vectoring and integrated flight- and propulsion control
+66.6.Analytical controller analysis (stability and robustness, using linear models)
+66.7.Controller analysis using desktop simulation
+66.8.Controller analysis using a flight simulator (pilot-in-the-loop, handling qualities)
+66.9.Flight test analysis
+66.10.Development of a more efficient, integrated design and analysis process for robust controllers
+67.Aircraft Performance Analysis
+67.1.Mathematical modelling (3 DOF point mass model, equations of motion, environment, aerodynamics, engine and systems)
+67.2.Analytical performance calculations
+67.3.Performance Analysis of complex and/or dangerous manoeuvres via non-linear desktop simulation
+67.4.Flight Tests - experimental performance (definition of suitable test manoeuvres, instrumentation and validation of model and analytical analysis results)
+68.Optimisation of Aircraft Performance
+68.1.Mathematical modelling (see 503).
+68.2.Selection of optimisation method and strategy.
+68.3.Mathematical Definition of performance objectives.
+68.4.Implementation and application of efficient optimisation routines.
+68.5.Verification of optimisation results in simulation and flight tests.
+69.System Failure and Damage Analysis
+69.1.Analysis of engine failure
+69.2.Design of fault-tolerant/ adaptive control systems (redundancy, fault detection and reconfiguration)
+69.3.Analysis of FCS hardware failure (sensors, hydraulic systems, control surfaces)
+69.4.Damage to the aircraft structure, resulting in altered aerodynamic properties
+70.Environmental Hazard Analysis
+70.1.Take-off and landing in severe crosswind.
+70.2.Windshear and microbursts (usually in combination with turbulence).
+70.3.Turbulence/ gusts.
+70.4.Terrain and airport conditions (terrain profile effects on radar altimeter, wind interference from buildings).
+70.5.Wake vortex effects from other aircraft.
+70.6.Icing conditions / heavy precipitation.
+71.Methods and IT tools for Collaborative Product & Process Engineering
+71.1.Virtual Enterprise
+71.2.Secure IT infrastructure
+71.3.Workflow management systems
+71.4.Virtual environments for collaborative working
+71.5.Product Lifecycle interaction
+71.6.Virtual Conferencing
+72.On-board systems engineering
+72.1.Integration system technologies
+72.2.Modelling and Simulation (including rapid and virtual prototyping)
+72.3.Incremental Certification
+72.4.Interconnecting technology
+72.5.Avionics rig testing
+72.6.Laboratory systems testing
+72.7.Interface Control Specification methods: Mechanical interface, Electronic interface, Data exchange
+73.Environmental and EM compliance engineering process
+73.1.Performance base specifications to define the real use environments
+73.2.Sources
+73.3.Advanced Environmental and EMI protection design and verification measures
+73.4.EMI/EMC/HIRF
+73.5.Lightning
+73.6.Hardening
+73.7.Shock testing
+74.Flight/ Ground Tests
+74.1.Test planning: Test plan, Flight plan, Test schedule
+74.2.Test specification:
+74.3.Hazard analysis/Safety: Safety of flight, Recovery, Minimum crew, Risk assessment, On board safety provisions, Engine failure, Deep stall, Flight test safety monitoring, EMI-EMC, Crew safety training, Safety procedures
+74.4.Test conduct: Test cards / Responsibility distribution / Procedures / Briefing and Debriefing / Test report
+74.5.Instrumentation system: Measurement , Data Acquisition and Recording equipment, Calibration
+74.6.Data processing and analysis: Data archiving, Data reduction, Engineering units, Data retrieval , Flight Test Data Base, Telemetry, Ground monitoring
+74.7.Logistics support: Spares, Repair, Maintenance, Training
+74.8.Certification & Qualification: Certification reports, Airworthiness authorities, Certificate of Airworthiness
+75.Life-cycle Integration
+75.1.Technology management: Product improvement strategies through technology refresh and insertion methods
+75.2.Obsolescence Management1. Reliability Engineering methods
+75.3.COTS management, COTS reliability prediction and assessment methods
+75.4.Design for Maintainability
+75.5.Testability: built-in Test
+75.6.Integrated modular avionics,
+75.7.Open systems architectures,
+75.8.Training: embedded training
+75.9.Whole-life Cost Analysis / Life-cycle cost analysis, Total ownership costs: Re-design costs, Cost matrix
+76.System Certification
+76.1.Certification of new technologies and operations
+76.2.Certification of air-worthiness, certification requirements for airborne and non-airborne systems. 3.Incremental certification
+76.3.System safety assessment
+76.4.HW / SW certification
+76.5.Improvement of existing rules and regulations (e.g. Cross-wind criteria, contaminated runway criteria), in the future particularly relevant to ATM in view of complete lack of certification of ATM systems)
+77.Fault Tolerant Systems
+77.1.Fault tolerant mechanisms: Redundancy, Backup (hot, cold,..), Voting mechanism, Fault detection
+77.2.Parallel processing / Synchronisation mechanisms
+77.3.Fault propagation, Isolation of fault effects
+78.Hazard Analysis
+78.1.Safety / Risk management: Operational safety assessment, Risk determination
+78.1.1.Review of proposed operation
+78.1.2.Hazard identification and clustering
+78.1.3.Identification of conflict scenarios
+78.1.4.Expert judgement to evaluate frequency and severity of hazards
+78.1.5.Mitigating measures
+78.2.Safety requirements (rules and regulations):
+78.2.1.Requirement based testing
+78.2.2.Requirement evaluation
+78.2.3.Requirement development
+79.Safety modelling
+79.1.Safety perception modelling
+79.2.Third party risk modelling
+79.3.Wake vortex induced risk modelling
+79.4.Collision risk modelling
+79.5.Dependability modelling
+79.6.Controlled Flight Into Terrain modelling
+79.7.Flight security modelling
+79.8.Bird strike risk modelling
+79.9.Safety management modelling
+80.Air Safety Data analysis
+80.1.Trend identification
+80.2.Datamining
+80.3.Analysis of flight data from day-to-day operations, risk analysis
+80.4.Compilation of a sample of Air Traffic Management related accidents
+80.5.Compilation of exposure data (i.e. number of conducted flights)
+80.6.Estimation of accident rates.
+80.7.Accident Sample Inclusion Criteria
+80.8.Accident taxonomy
+80.9.Accident data breakdown: Flight phase, Event types, Fatalities, World regions
+81.System reliability
+81.1.Means of compliance: Fault tolerance
+81.2.Reliability: Analysis, Requirements
+81.3.Deterministic: Functionality, Resources bound, Time bound
+81.4.Maturity
+81.5.Recoverability
+82.Security / Risk analysis
+82.1.Vulnerability assessment methodologies
+82.2.Security metrics (e.g. US Total Architecture for Aviation Security) to "score" various security systems
+82.3.Security audits (of airlines, airports)
+82.4.Threat assessments
+83.Maintenance modelling
+83.1.Asset management modelling methodology development
+83.2.Aircraft maintenance modelling (exploring impact of changes in maintenance regime on aircraft availability, utilisation, engineering costs, and staff requirements)
+83.3.Airport systems maintenance modelling (exploring impact of changes in maintenance regime on system availability, utilisation, engineering costs, and staff requirements)
+83.4.Decision-support tool development
+84.Infra-red and Radar Signature Control
+84.1.Material thermodynamic and optical properties.
+84.2.Skin temperatures
+84.3.Internal heat dissipation
+84.4.Jet aerodynamic description, temperature, pressure and species concentration
+84.5.Spectroscopic data base of emitting species
+84.6.Radiative transfer computation in hot gases media
+84.7.Multi-reflection in cavities
+84.8.Radar Cross Section computation
+84.9.Radar Absorbing Materials
+84.10.Ground RCS measurements
+84.11.In-flight RCS measurements
+85.Advanced information processing
+85.1.Radar data processing
+85.2.Multi sensor data fusion
+85.3.Real-time systems
+85.4.Command, Control, Communications & Intelligence (C3I)
+85.5.Situation monitoring
+85.6.Alarm management
+86.Collaborative Decision Making
+86.1.Multi-agent systems
+86.2.Task modelling
+86.3.Negotiation strategies
+86.4.Agent-based distributed architecture
+86.5.Information distribution
+87.Simulator environments & Virtual reality
+87.1.Training Environment: real-time geographically distributed flight-simulations
+87.2.Mission preparation, rehearsal & evaluation
+87.3.Concept development
+87.4.Material design
+87.5.Material testing
+87.6.Personnel selection.
+87.7.Task analysis
+87.8.Man-in-the-loop simulation
+88.Decision Support Systems
+88.1.User task modelling
+88.2.(Intelligent) user interface
+88.3.Situation assessment
+88.4.Planning & monitoring (Sequencing, Time scheduling, Mission planning support, Flow planning, Resource allocation, Feedback control, Guidance)
+88.5.Crew assistant
+88.6.Traffic flow optimisation
+89.Information management & Knowledge management (Methods & tools)
+89.1.Knowledge gathering
+89.2.Knowledge representation
+89.3.Knowledge retrieval
+89.4.Product data management systems
+89.5.Ontology
+89.6.Competence management
+89.7.Web technology
+89.8.Semantic web
+89.9.Data mining
+90.Autonomous operation
+90.1.Autonomous behaviour:
+90.2.Reactive behaviour:
+90.3.Pro-active behaviour / Goal oriented behaviour:
+90.4.Social behaviour:
+90.5.Mission planning
+90.6.Sensor data processing: processing step before data fusion.
+90.7.Autonomous decision making
+90.8.Expert systems
+90.9.Threat avoidance / Conflict resolution
+91.Aeronautical Software Engineering
+91.1.Requirements capture
+91.2.Object-oriented analysis & design
+91.3.Software implementation
+91.4.Software testing: Integration testing, White/Black box test, Code coverage
+91.5.Software verification & validation
+91.6.Software certification: software safety, redundancy, built-in tesT
+91.7.Software maintenance
+92.Development of operational research methods & tools
+92.1.Stakeholder analysis
+92.2.Development of OR methods
+92.3.Development of OR tools
+92.4.Validation of OR tools
+93.Development of synthetic environment & virtual reality tools
+93.1.General systems engineering aspects of VR/SE development
+93.2.Development methodologies for virtual reality (VR)/synthetic environment (SE) tools
+93.3.Development of VR/SE tools in aircraft context - for cockpit/aircrew
+93.4.Development of VR/SE tools in aircraft context - for passenger cabin/aircrew
+93.5.Development of VR/SE tools in aircraft context - for cargo area
+93.6.Development of VR/SE tools in airport context - for passenger handling area
+93.7.Development of VR/SE tools in airport context - for cargo/baggage area
+93.8.Development of VR/SE tools in airport context - for aircraft movement area
+93.9.Development of VR/SE tools in ATM context - for controllers
+93.10.Understand the physiological and psychological interactions between humans and VR/SE
+94.Aircraft Performance Assessment
+94.1.Development of aircraft modelling and analysis methods and tools
+94.2.Modelling and analysis of aircraft capacity
+94.3.Modelling and analysis of passenger handling
+94.4.Modelling and analysis of cargo handling
+95.Airport performance assessment
+95.1.Development of airport operations modelling and analysis methods and tools
+95.2.Modelling and analysis of aircraft handling/capacity
+95.3.Modelling and analysis of passenger handling processes and procedures (e.g. checking-in, immigration, boarding etc)
+95.4.Modelling and analysis of cargo handling
+96.Business modelling
+96.1.Development of business modelling methods and tools
+96.2.Use of business modelling methods and tools (e.g. yield/revenue management)
+96.3.Analysis of regulatory aspects of aviation
+97.Numerical Models (including Fast Time Simulation)
+97.1.Numerical models
+97.2.Mathematical models
+97.3.System dynamics model
+97.4.Faster-than-real-time time simulators
+97.5.Software issues - common software modules, software libraries.
+98.Real Time Simulators
+98.1.Real-time simulator
+98.2.Experimental simulator
+98.3.Software issues - common software modules, software libraries
+99.General Purpose Equipment
+99.1.R&D equipment
+99.2.Test equipment
+99.3.Measurement equipment
+99.4.Development platforms - flying laboratory, experimental aircraft
+99.5.Laboratory equipment, calibration equipment
+100.Reference Data for R&D Use and live/RT data Use
+100.1.Reference Data (bibliographies, abstracts service, statistical information)
+100.2.Development of libraries of statistics, reference data, bibliographies etc
+100.3.Ground systems information (library, airport database, aircraft database, live data distribution and recording from ATM system - radar, RDPS, FDPS, CFMU, network exchange messages...).
+100.4.Airborne systems information (ACARS messages) and AOC systems, aircraft performance statistics, traffic samples and air movement data.
+101.Methodology
+101.1.Validation methods, methodologies, procedures, metrics, tools. Includes studies of validation issues for new technologies and systems.
+101.2.Hierarchical methodologies
+101.3.Studies of certification issues for new technologies and systems
+101.4.system validation through modelling and simulation
+101.5.integration and validation of technologies
+101.6.Concept validation
+101.7.Collection, analysis and validation of test results
+101.8.Meta-models
+101.9.Coverage-based, fault-based, error-based testing and validation
+101.10.Requirement specification
+101.11.Test plans - acceptance, system and sub-system integration, module-level
+102.Large scale validation Experiments
+102.1.Validation experiments, trials
+102.2.Pre-operational trials
+102.3.Trials - air/ground, ground/air, air/air
+102.4.Pilot installations to ease the large-scale validation of proposed solutions
+102.5.Validation of measurement tools and models
+102.6.Functional mock-ups
+102.7.Validation at component, sub-system and system levels
+102.8.Operational validation by flight testing
+103.Large scale validation Platforms
+103.1.Ground validation benches
+103.2.Aircraft equipped for test and validation in an operational context
+103.3.Technology demonstrators, technology integration platforms (TIPs)
+103.4.Integrated platforms for system development, safety analysis and certification
+103.5.Wind tunnels
+103.6.Prototyping tools
+103.7.Digital mock-ups
+103.8.Validation vehicles for powerplants, avionics, aircraft structure, aircraft systems, flight software
+103.9.Combined validation platforms for multiple technology programmes
+103.10.Advanced experimental testbeds
+104.EcoDesign and Engineering for Sustainability
+104.1.Sustainable Industrialization; Sustainability of Materials
+104.2.Sustainability of Materials
+104.3.Processes and Resources
+104.4.Environmentally Friendly Materials
+104.5.Green Design and Sustainable Manufacturing & Production
+104.6.Lifetime Services
+104.7.Methods and Tools for Life Extension
+104.8.Recycling Technologies
+104.9.Disposal Strategies
+104.10.Waste Management
+104.11.End-of-Life
+104.12.Life Cycle Assessment and Environmental Impacts
+104.13.Circularity and Circularity Performance
+105.Air Trafic Management
+105.1.Overall ATM
+105.2.Airspace Management
+105.3.Flow and Capacity Management
+105.4.Communications and Systems Technology
+105.5.Navigation Systems
+105.6.Surveillance Sensor Systems
+105.7.ATM Automated Support
+106.Airports
+106.1.Airport Traffic Management
+106.2.Airport Operations
+106.3.Airline Operations
+106.4.Meteorological
+106.5.R&D Management and Co-ordination
+107.Maintenance, Repair & Overhaul (MRO)
+107.1.Non-Destructive Testing (NDT)
+107.2.Non-Destructive Inspection (NDI)
+107.3.Non-destructive evaluation (NDE)
+107.4.Structural Health Monitoring (SHM)
+107.5.Sensors
+107.6.Logistics
+107.7.Digital Twin
+107.8.Augmented and Virtual Reality
+107.9.Robotics
+107.10.Smart Repair
+107.11.New Maintenance
+107.12.Remanufacturing and Repair Methods
+108.UAS & Scaled Flight Testing
+108.1.UAV Configuration & Technologies
+108.2.Control Architectures
+108.3.Aerial Robotics
+108.4.Scaling
+108.5.Subscale
+109.Human Factors Integration, Man-machine Interface
+109.1.Human-machine/computer interface (HMI, HCI, MMI) - design and evaluation
+109.2.Displays - Colour, 3D display, Virtual reality, Information presentation
+109.3.HF integration
+109.4.Development of methods, tools and processes to support the integration of people with complex systems
+109.5.Vision modelling and auditory communication studies
+109.6.Anthropometric studies
+110.Human Information Processing
+110.1.Knowledge engineering
+110.2.Information gathering
+110.3.Information processing (aircrew, ATM, ground staff)
+110.4.Cognitive aspects of operator performance
+110.5.Human error and reliability studies
+111.Human Performance Modelling & Enhancement
+111.1.Crew workload optimisation, error-tolerant systems
+111.2.Measurement and modelling of controller and pilot performance in the ATM system
+111.3.Measurement and modelling of aircrew performance
+111.4.Evaluation of human factors procedures
+111.5.Team working
+111.6.Self separation
+111.7.The human as a supervisor (both the pilot and/or the controller)
+111.8.Tasks sharing, task delegation
+111.9.Pilot less a/c
+111.10.Research and techniques to sense and monitor human performance, including physiological sensing and monitoring
+111.11.Studies of interventions (excluding training) that enhance individual physical and mental performance
+112.Selection & Training
+112.1.Recruitment and selection of aircrew (methods, facilities, evaluation)
+112.2.Recruitment and selection of ATM personnel (methods, facilities, evaluation)
+112.3.Recruitment and selection of ground crew (methods, facilities, evaluation)
+112.4.Training of aircrew (methods, facilities, evaluation)
+112.5.Training of ATM personnel (methods, facilities, evaluation)
+112.6.Training of ground crew (methods, facilities, evaluation)
+112.7.Staff management and working practices (shift work, roistering etc)
+112.8.Certification and licensing aspects
+112.9.Training needs analysis
+112.10.Management of skill acquisition and skill fade
+113.Human Survivability, Protection and Stress Effects
+113.1.Health and safety/occupational health aspects for aircrew (methods, facilities, evaluation)
+113.2.Health and safety/occupational health aspects for ATM personnel (methods, facilities, evaluation)
+113.3.Health and safety/occupational health aspects for ground crew (methods, facilities, evaluation)
+113.4.Health and safety/occupational health aspects for passengers (methods, facilities, evaluation)
+113.5.Personnel response to blast and fire (injuries sustained, casualty rates etc)
+113.6.Personnel protective systems - aircrew
+113.7.Personnel protective systems - passengers
+113.8.Personnel protective systems - ground crew
+114.Human Element in Security
+114.1.Pilot training for response to hijack incidents (computer- and simulator-based)
+114.2.Baggage and cargo screener selection
+114.3.Baggage and cargo screener training (e.g. Threat Image Projection, performance management)
+114.4.Baggage and cargo screener management (shift and duty time rosters, team leadership)
+114.5.Background security checks for personnel having access to secure areas
+115.Scenarios analysis
+115.1.Identification of drivers of change (technological, demographic, cultural, political)
+115.2.Elaboration of basic trends (societal, cultural)
+115.3.Key uncertainties - derivation, analysis
+115.4.Scenario generation
+115.5.Scenario analysis
+115.6.Drivers for future research - agenda setting and evaluation
+116.Unconventional configurations and new aircraft concepts
+116.1.Blended wing/body airliners
+116.2.Supersonic or hypersonic airliners
+116.3.Lighter-than-air (LTA) vehicles/airships - cargo transport, surveillance, communications, remote imaging
+116.4.Very large payload capacity aircraft - cargo transports, airliners, utilisation of Wing In Ground effect (WIG)
+116.5.Fully automated aircraft - 24 hour a day operation
+116.6.Tilt-rotor and other vertical take-off and landing (VTOL) configurations
+116.7.Hybrid configurations
+116.8.Dedicated freight aircraft operations using separate infrastructures from passenger airliners - inter-modality issues
+116.9.Interface with airport ground systems
+117.Breakthrough technologies
+117.1.New materials
+117.2.Advanced design technologies
+117.3.Alternative fuels
+117.4.Safety enabling technologies - remote control of aircraft, fully automated approach and landing
+117.5.Unmanned aircraft
+117.6.Free flight control regime
+117.7.Technology watching
+117.8.Nanotechnology
+118.From Industry 4.0 to Industry 5.0
+118.1.Factory of the Future
+118.2.Digital Factory
+118.3.Digital Manufacturing
+118.4.Digital Twins
+118.5.Cyber-physical Systems
+118.6.Internet of Things
+118.7.Cloud Computing
+118.8.Human-centric
+118.9.Sustainable
+118.10.Resilient
