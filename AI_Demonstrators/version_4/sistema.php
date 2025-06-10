@@ -336,20 +336,19 @@
 
                             echo "<td>$statusText $statusIcon</td>";
                         }
-
                         if ($logado) {
                             echo "<td>";
-                            echo "<a class='btn btn-primary btn-sm' title='View project' href='viewProject.php?id=$idProj'>📖</a> ";
+                            echo "<a class='btn btn-primary btn-sm' title='View project' href='viewProject.php?id=$idProj'><span class='glyphicon glyphicon-eye-open'></span></a> ";
 
                             if ($tipoUsuario === 'usuario') {
-                                echo "<a class='btn btn-primary btn-sm' title='Edit project' href='editProject.php?id=$idProj'>✏️</a> ";
-                                echo "<a class='btn btn-primary btn-sm' title='Edit demonstrators' href='editDemonstrator.php?id=$idProj'>🖼️</a> ";
-                                echo "<a class='btn btn-danger btn-sm' title='Delete project' href='deleteProj.php?id=$idProj'>🗑️</a>";
+                                echo "<a class='btn btn-primary btn-sm' title='Edit project' href='editProject.php?id=$idProj'><span class='glyphicon glyphicon-pencil'></span></a> ";
+                                echo "<a class='btn btn-primary btn-sm' title='Edit demonstrators' href='editDemonstrator.php?id=$idProj'><span class='glyphicon glyphicon-picture'></span></a> ";
+                                echo "<a class='btn btn-danger btn-sm' title='Delete project' href='deleteProj.php?id=$idProj'><span class='glyphicon glyphicon-trash'></span></a>";
                             }
 
                             echo "</td>";
                         } else {
-                            echo "<td><a class='btn btn-primary btn-sm' title='View project' href='viewProject.php?id=$idProj'>📖</a></td>";
+                            echo "<td><a class='btn btn-primary btn-sm' title='View project' href='viewProject.php?id=$idProj'><span class='glyphicon glyphicon-eye-open'></span></a></td>";
                         }
 
                         echo "</tr>";
