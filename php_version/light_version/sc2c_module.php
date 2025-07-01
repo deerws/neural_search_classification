@@ -804,7 +804,7 @@ try {
                         <div class="panel-body">
                             <ul>
                                 <li>Digite seu nome no campo indicado</li>
-                                <li>Selecione um programa para filtrar (opcional)</li>
+                                <li>Selecione um programa para filtrar (opcional) e atenha-se a sua área de atuação</li>
                             </ul>
                         </div>
                     </div>
@@ -815,7 +815,7 @@ try {
                         <div class="panel-body">
                             <ul>
                                 <li>Analise as três classificações sugeridas para ACARE e NASA</li>
-                                <li>Aprove ou rejeite cada subdomínio</li>
+                                <li>Aprove ou rejeite cada subdomínio ou abstenha-se</li>
                                 <li>Adicione novos subdomínios se necessário</li>
                                 <li>Use o botão feedback para enviar um comentário adicional</li>
                             </ul>
