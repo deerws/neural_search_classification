@@ -199,7 +199,7 @@ sort($classificacoes);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3-chord@3"></script>
+
     <style>
         /* Tema Escuro Uniforme - SC2C.Aero */
         body {
@@ -259,6 +259,7 @@ sort($classificacoes);
             display: flex;
             align-items: center;
             font-size: 14px;
+            color: #e0e0e0;
         }
 
         .legend-color {
@@ -267,7 +268,6 @@ sort($classificacoes);
             margin-right: 5px;
             border-radius: 3px;
         }
-
         .container {
             max-width: none;
             width: 98%;
@@ -640,9 +640,17 @@ sort($classificacoes);
             
             <div class="chart-container">
                 <h2>Relação Programas x Áreas</h2>
-                <div class="chord-container" id="chordDiagram"></div>
-                <div class="chord-tooltip" id="chordTooltip"></div>
-                <div class="chord-legend" id="chordLegend"></div>
+                <div id="networkGraph" class="network-container"></div>
+                <div class="graph-legend">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color:#1f77b4;"></span>
+                        Programas
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color:#ff7f0e;"></span>
+                        Áreas
+                    </div>
+                </div>
             </div>
             
             
@@ -768,79 +776,101 @@ sort($classificacoes);
 
         // Carrega os dados quando a página é aberta
         window.onload = loadCSVData;        
+        function applyFilters() {
+            const programa = document.getElementById("programa").value;
+            const area = document.getElementById("area").value;
+            
+            // Filtrar dados conforme seleção
+            const filteredData = {
+                programs: programa ? [programa] : graphData.programs,
+                areas: area ? [area] : graphData.areas,
+                matrix: graphData.matrix
+            };
+            
+            renderNetworkGraph(filteredData);
+        }
         // Gráfico de Corda Interativo
         // Gráfico de Rede Interativo
+        // Configuração do gráfico de rede
         function renderNetworkGraph(data) {
-            const width = 800;
+            // Limpar container existente
+            d3.select("#networkGraph").html("");
+            
+            // Dimensões do gráfico
+            const width = document.getElementById('networkGraph').clientWidth;
             const height = 600;
-            const container = d3.select("#networkGraph");
             
-            // Limpa o container
-            container.html("");
-            
-            // Cria o SVG
-            const svg = container.append("svg")
+            // Criar SVG
+            const svg = d3.select("#networkGraph")
+                .append("svg")
                 .attr("width", width)
                 .attr("height", height);
             
-            // Cria as escalas de cor
-            const color = d3.scaleOrdinal(d3.schemeCategory10);
-            
-            // Processa os dados para o formato de rede
+            // Processar dados para formato de rede
             const nodes = [];
             const links = [];
+            const nodeMap = {};
             
-            // Adiciona programas como nós
+            // Adicionar nós para programas
             data.programs.forEach((program, i) => {
+                const nodeId = `program_${i}`;
+                nodeMap[program] = nodeId;
                 nodes.push({
-                    id: program,
+                    id: nodeId,
+                    name: program,
                     group: 1,
-                    size: 20,
-                    type: "programa"
+                    radius: 10
                 });
             });
             
-            // Adiciona áreas como nós
+            // Adicionar nós para áreas
             data.areas.forEach((area, i) => {
+                const nodeId = `area_${i}`;
+                nodeMap[area] = nodeId;
                 nodes.push({
-                    id: area,
+                    id: nodeId,
+                    name: area,
                     group: 2,
-                    size: 15,
-                    type: "area"
+                    radius: 8
                 });
             });
             
-            // Adiciona links
+            // Adicionar links
             data.programs.forEach((program, i) => {
                 data.areas.forEach((area, j) => {
                     if (data.matrix[i][j] > 0) {
                         links.push({
-                            source: program,
-                            target: area,
+                            source: nodeMap[program],
+                            target: nodeMap[area],
                             value: data.matrix[i][j]
                         });
                     }
                 });
             });
             
-            // Cria a simulação de força
+            // Escala de cores
+            const color = d3.scaleOrdinal()
+                .domain([1, 2])
+                .range(["#1f77b4", "#ff7f0e"]);
+            
+            // Simulação de força
             const simulation = d3.forceSimulation(nodes)
                 .force("link", d3.forceLink(links).id(d => d.id).distance(100))
-                .force("charge", d3.forceManyBody().strength(-100))
+                .force("charge", d3.forceManyBody().strength(-50))
                 .force("center", d3.forceCenter(width / 2, height / 2))
-                .force("x", d3.forceX(width / 2).strength(0.1))
-                .force("y", d3.forceY(height / 2).strength(0.1));
+                .force("x", d3.forceX(width / 2).strength(0.05))
+                .force("y", d3.forceY(height / 2).strength(0.05));
             
-            // Desenha os links
+            // Desenhar links
             const link = svg.append("g")
                 .selectAll("line")
                 .data(links)
                 .enter().append("line")
-                .attr("stroke-width", d => Math.sqrt(d.value))
                 .attr("stroke", "#999")
-                .attr("stroke-opacity", 0.6);
+                .attr("stroke-opacity", 0.6)
+                .attr("stroke-width", d => Math.sqrt(d.value));
             
-            // Cria grupos de nós
+            // Criar grupos de nós
             const node = svg.append("g")
                 .selectAll("g")
                 .data(nodes)
@@ -850,22 +880,23 @@ sort($classificacoes);
                     .on("drag", dragged)
                     .on("end", dragended));
             
-            // Adiciona círculos aos nós
+            // Adicionar círculos
             node.append("circle")
-                .attr("r", d => d.size)
+                .attr("r", d => d.radius)
                 .attr("fill", d => color(d.group))
                 .attr("stroke", "#fff")
                 .attr("stroke-width", 1.5);
             
-            // Adiciona labels
+            // Adicionar labels
             node.append("text")
                 .attr("dx", 12)
                 .attr("dy", ".35em")
-                .text(d => d.id)
+                .text(d => d.name)
                 .style("font-size", "10px")
-                .style("fill", "#e0e0e0");
+                .style("fill", "#e0e0e0")
+                .style("display", "none"); // Inicialmente ocultos
             
-            // Atualiza a posição dos elementos
+            // Atualizar posições
             simulation.on("tick", () => {
                 link
                     .attr("x1", d => d.source.x)
@@ -875,6 +906,24 @@ sort($classificacoes);
                 
                 node
                     .attr("transform", d => `translate(${d.x},${d.y})`);
+            });
+            
+            // Interações
+            node.on("mouseover", function(event, d) {
+                // Mostrar label
+                d3.select(this).select("text").style("display", "block");
+                
+                // Destacar conexões
+                link
+                    .attr("stroke-opacity", l => 
+                        (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1);
+            })
+            .on("mouseout", function(event, d) {
+                // Ocultar label
+                d3.select(this).select("text").style("display", "none");
+                
+                // Restaurar conexões
+                link.attr("stroke-opacity", 0.6);
             });
             
             // Funções de drag
@@ -895,6 +944,26 @@ sort($classificacoes);
                 d.fy = null;
             }
         }
+
+        // Inicialização
+        document.addEventListener("DOMContentLoaded", function() {
+            // Dados para o gráfico
+            const graphData = {
+                programs: <?php echo json_encode($programs); ?>,
+                areas: <?php echo json_encode($areas); ?>,
+                matrix: <?php echo json_encode($matrix); ?>
+            };
+            
+            // Renderizar gráfico inicial
+            renderNetworkGraph(graphData);
+            
+            // Atualizar ao filtrar
+            document.querySelector("form").addEventListener("submit", function(e) {
+                e.preventDefault();
+                // Aqui você pode adicionar lógica para filtrar os dados
+                renderNetworkGraph(graphData);
+            });
+        });
 
         // Inicializar o gráfico
         $(document).ready(function() {
