@@ -128,39 +128,34 @@ foreach ($data as $row) {
 }
 
 // Preparar dados para o gráfico de corda
-$chordData = array();
+// Preparar dados para o gráfico de corda
 $programRelations = array();
-
 foreach ($data as $row) {
-    if (!isset($row['Programa']) || !isset($row['Área'])) continue;
+    if (!isset($row['Programa'])) continue;
     
     $program = $row['Programa'];
-    $area = $row['Área'];
+    $area = $row['Área'] ?? 'N/A';
     
     if (!isset($programRelations[$program])) {
         $programRelations[$program] = array();
     }
-    
-    if (!isset($programRelations[$program][$area])) {
-        $programRelations[$program][$area] = 0;
-    }
-    
-    $programRelations[$program][$area]++;
+    $programRelations[$program][$area] = ($programRelations[$program][$area] ?? 0) + 1;
 }
 
-// Converter para formato adequado para o gráfico de corda
-$programs = array_keys($programRelations);
-$areas = array();
-foreach ($programRelations as $rel) {
-    $areas = array_merge($areas, array_keys($rel));
-}
-$areas = array_unique($areas);
+// Converter para formato do chord diagram
+$allItems = array_values(array_unique(array_merge(
+    array_keys($programRelations),
+    array_keys(array_merge(...array_values($programRelations)))
+)));
 
-$matrix = array();
-foreach ($programs as $i => $program) {
-    $matrix[$i] = array();
-    foreach ($areas as $j => $area) {
-        $matrix[$i][$j] = isset($programRelations[$program][$area]) ? $programRelations[$program][$area] : 0;
+$matrix = array_fill(0, count($allItems), array_fill(0, count($allItems), 0));
+
+foreach ($programRelations as $program => $relations) {
+    $i = array_search($program, $allItems);
+    foreach ($relations as $area => $count) {
+        $j = array_search($area, $allItems);
+        $matrix[$i][$j] += $count;
+        $matrix[$j][$i] += $count; // Adiciona a relação inversa para simetria
     }
 }
 
@@ -274,12 +269,12 @@ sort($classificacoes);
             margin: 0 auto;
             padding: 0 10px;
         }
-                .chord-container {
+        .chord-container {
             width: 100%;
-            height: 600px;
+            min-height: 600px;
             margin: 20px 0;
         }
-        
+
         .chord-tooltip {
             position: absolute;
             padding: 8px;
@@ -315,13 +310,13 @@ sort($classificacoes);
             margin-top: 15px;
             justify-content: center;
         }
-        
+
         .chord-legend-item {
             display: flex;
             align-items: center;
             font-size: 12px;
         }
-        
+
         .chord-legend-color {
             width: 15px;
             height: 15px;
@@ -640,17 +635,9 @@ sort($classificacoes);
             
             <div class="chart-container">
                 <h2>Relação Programas x Áreas</h2>
-                <div id="networkGraph" class="network-container"></div>
-                <div class="graph-legend">
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color:#1f77b4;"></span>
-                        Programas
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color:#ff7f0e;"></span>
-                        Áreas
-                    </div>
-                </div>
+                <div id="chordDiagram" class="chord-container"></div>
+                <div id="chordTooltip" class="chord-tooltip"></div>
+                <div id="chordLegend" class="chord-legend"></div>
             </div>
             
             
@@ -777,254 +764,159 @@ sort($classificacoes);
         // Carrega os dados quando a página é aberta
         window.onload = loadCSVData;        
         function applyFilters() {
-            const programa = document.getElementById("programa").value;
-            const area = document.getElementById("area").value;
-            
-            // Filtrar dados conforme seleção
-            const filteredData = {
-                programs: programa ? [programa] : graphData.programs,
-                areas: area ? [area] : graphData.areas,
-                matrix: graphData.matrix
+            const filters = {
+                programa: document.getElementById("programa").value,
+                area: document.getElementById("area").value,
+                status: document.getElementById("status").value,
+                classificacao: document.getElementById("classificacao").value
             };
             
-            renderNetworkGraph(filteredData);
-        }
-        // Gráfico de Corda Interativo
-        // Gráfico de Rede Interativo
-        // Configuração do gráfico de rede
-        function renderNetworkGraph(data) {
-            // Limpar container existente
-            d3.select("#networkGraph").html("");
+            fetch(`get_filtered_data.php?${new URLSearchParams(filters)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Processa os dados como no PHP
+                    const { matrix, labels } = processDataForChord(data);
+                    updateChordDiagram({ matrix, labels });
+                });
+        }        
+        // Dados preparados no PHP - precisamos passá-los para o JavaScript
+        const chordData = {
+            matrix: <?php echo json_encode($matrix); ?>,
+            labels: <?php echo json_encode($allItems); ?>
+        };
+
+        // Cores para os grupos (você pode personalizar)
+        const colorScheme = d3.scaleOrdinal(d3.schemeCategory10);
+
+        // Função para renderizar o chord diagram
+        function renderChordDiagram() {
+            // Limpa o container antes de renderizar
+            d3.select("#chordDiagram").html("");
             
-            // Dimensões do gráfico
-            const width = document.getElementById('networkGraph').clientWidth;
-            const height = 600;
+            // Verifica se temos dados
+            if (chordData.matrix.length === 0 || chordData.labels.length === 0) {
+                console.warn("Sem dados para renderizar o chord diagram");
+                return;
+            }
             
-            // Criar SVG
-            const svg = d3.select("#networkGraph")
-                .append("svg")
+            // Configurações do gráfico
+            const width = document.getElementById("chordDiagram").clientWidth;
+            const height = Math.min(width, 600);
+            const outerRadius = Math.min(width, height) * 0.5 - 40;
+            const innerRadius = outerRadius - 30;
+            
+            // Cria o layout do chord
+            const chord = d3.chord()
+                .padAngle(0.05)
+                .sortSubgroups(d3.descending);
+            
+            // Cria o arc generator
+            const arc = d3.arc()
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius);
+            
+            // Cria o ribbon generator
+            const ribbon = d3.ribbon()
+                .radius(innerRadius);
+            
+            // Cria o SVG
+            const svg = d3.select("#chordDiagram").append("svg")
                 .attr("width", width)
-                .attr("height", height);
+                .attr("height", height)
+                .attr("viewBox", [-width / 2, -height / 2, width, height])
+                .attr("style", "max-width: 100%; height: auto;");
             
-            // Processar dados para formato de rede
-            const nodes = [];
-            const links = [];
-            const nodeMap = {};
+            // Adiciona um grupo para o gráfico
+            const g = svg.append("g");
             
-            // Adicionar nós para programas
-            data.programs.forEach((program, i) => {
-                const nodeId = `program_${i}`;
-                nodeMap[program] = nodeId;
-                nodes.push({
-                    id: nodeId,
-                    name: program,
-                    group: 1,
-                    radius: 10
-                });
-            });
+            // Computa os relacionamentos
+            const chords = chord(chordData.matrix);
             
-            // Adicionar nós para áreas
-            data.areas.forEach((area, i) => {
-                const nodeId = `area_${i}`;
-                nodeMap[area] = nodeId;
-                nodes.push({
-                    id: nodeId,
-                    name: area,
-                    group: 2,
-                    radius: 8
-                });
-            });
-            
-            // Adicionar links
-            data.programs.forEach((program, i) => {
-                data.areas.forEach((area, j) => {
-                    if (data.matrix[i][j] > 0) {
-                        links.push({
-                            source: nodeMap[program],
-                            target: nodeMap[area],
-                            value: data.matrix[i][j]
-                        });
-                    }
-                });
-            });
-            
-            // Escala de cores
-            const color = d3.scaleOrdinal()
-                .domain([1, 2])
-                .range(["#1f77b4", "#ff7f0e"]);
-            
-            // Simulação de força
-            const simulation = d3.forceSimulation(nodes)
-                .force("link", d3.forceLink(links).id(d => d.id).distance(100))
-                .force("charge", d3.forceManyBody().strength(-50))
-                .force("center", d3.forceCenter(width / 2, height / 2))
-                .force("x", d3.forceX(width / 2).strength(0.05))
-                .force("y", d3.forceY(height / 2).strength(0.05));
-            
-            // Desenhar links
-            const link = svg.append("g")
-                .selectAll("line")
-                .data(links)
-                .enter().append("line")
-                .attr("stroke", "#999")
-                .attr("stroke-opacity", 0.6)
-                .attr("stroke-width", d => Math.sqrt(d.value));
-            
-            // Criar grupos de nós
-            const node = svg.append("g")
+            // Adiciona os grupos (arcos externos)
+            const group = g.append("g")
                 .selectAll("g")
-                .data(nodes)
-                .enter().append("g")
-                .call(d3.drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended));
+                .data(chords.groups)
+                .join("g");
             
-            // Adicionar círculos
-            node.append("circle")
-                .attr("r", d => d.radius)
-                .attr("fill", d => color(d.group))
-                .attr("stroke", "#fff")
-                .attr("stroke-width", 1.5);
+            group.append("path")
+                .attr("fill", d => colorScheme(d.index))
+                .attr("d", arc)
+                .on("mouseover", function(d) {
+                    // Destaca este grupo e suas conexões
+                    d3.select(this).attr("stroke", "#fff").attr("stroke-width", 2);
+                    ribbonGroup.filter(dd => dd.source.index === d.index || dd.target.index === d.index)
+                        .attr("stroke", "#fff")
+                        .attr("stroke-width", 2);
+                })
+                .on("mouseout", function(d) {
+                    d3.select(this).attr("stroke", null);
+                    ribbonGroup.attr("stroke", null);
+                });
             
-            // Adicionar labels
-            node.append("text")
-                .attr("dx", 12)
+            // Adiciona os tiques (rótulos)
+            group.append("text")
+                .each(d => { d.angle = (d.startAngle + d.endAngle) / 2; })
                 .attr("dy", ".35em")
-                .text(d => d.name)
+                .attr("transform", d => `
+                    rotate(${d.angle * 180 / Math.PI - 90})
+                    translate(${outerRadius + 10})
+                    ${d.angle > Math.PI ? "rotate(180)" : ""}
+                `)
+                .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
+                .text(d => chordData.labels[d.index])
                 .style("font-size", "10px")
-                .style("fill", "#e0e0e0")
-                .style("display", "none"); // Inicialmente ocultos
+                .style("fill", "#e0e0e0");
             
-            // Atualizar posições
-            simulation.on("tick", () => {
-                link
-                    .attr("x1", d => d.source.x)
-                    .attr("y1", d => d.source.y)
-                    .attr("x2", d => d.target.x)
-                    .attr("y2", d => d.target.y);
-                
-                node
-                    .attr("transform", d => `translate(${d.x},${d.y})`);
-            });
+            // Adiciona as conexões (ribbons)
+            const ribbonGroup = g.append("g")
+                .attr("fill-opacity", 0.8)
+                .selectAll("path")
+                .data(chords)
+                .join("path")
+                .attr("d", ribbon)
+                .attr("fill", d => colorScheme(d.source.index))
+                .attr("stroke", "#333")
+                .on("mouseover", function(d) {
+                    // Mostra tooltip com informações
+                    const tooltip = d3.select("#chordTooltip");
+                    tooltip.style("display", "block")
+                        .html(`
+                            <strong>${chordData.labels[d.source.index]}</strong> → 
+                            <strong>${chordData.labels[d.target.index]}</strong><br>
+                            Valor: ${d.source.value}
+                        `);
+                })
+                .on("mousemove", function() {
+                    d3.select("#chordTooltip")
+                        .style("left", (d3.event.pageX + 10) + "px")
+                        .style("top", (d3.event.pageY - 10) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select("#chordTooltip").style("display", "none");
+                });
             
-            // Interações
-            node.on("mouseover", function(event, d) {
-                // Mostrar label
-                d3.select(this).select("text").style("display", "block");
-                
-                // Destacar conexões
-                link
-                    .attr("stroke-opacity", l => 
-                        (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1);
-            })
-            .on("mouseout", function(event, d) {
-                // Ocultar label
-                d3.select(this).select("text").style("display", "none");
-                
-                // Restaurar conexões
-                link.attr("stroke-opacity", 0.6);
-            });
-            
-            // Funções de drag
-            function dragstarted(event, d) {
-                if (!event.active) simulation.alphaTarget(0.3).restart();
-                d.fx = d.x;
-                d.fy = d.y;
-            }
-            
-            function dragged(event, d) {
-                d.fx = event.x;
-                d.fy = event.y;
-            }
-            
-            function dragended(event, d) {
-                if (!event.active) simulation.alphaTarget(0);
-                d.fx = null;
-                d.fy = null;
-            }
+            // Cria a legenda
+            const legend = d3.select("#chordLegend");
+            legend.selectAll(".chord-legend-item")
+                .data(chordData.labels)
+                .join("div")
+                .attr("class", "chord-legend-item")
+                .html((d, i) => `
+                    <span class="chord-legend-color" style="background:${colorScheme(i)}"></span>
+                    ${d}
+                `);
         }
 
-        // Inicialização
-        document.addEventListener("DOMContentLoaded", function() {
-            // Dados para o gráfico
-            const graphData = {
-                programs: <?php echo json_encode($programs); ?>,
-                areas: <?php echo json_encode($areas); ?>,
-                matrix: <?php echo json_encode($matrix); ?>
-            };
-            
-            // Renderizar gráfico inicial
-            renderNetworkGraph(graphData);
-            
-            // Atualizar ao filtrar
-            document.querySelector("form").addEventListener("submit", function(e) {
-                e.preventDefault();
-                // Aqui você pode adicionar lógica para filtrar os dados
-                renderNetworkGraph(graphData);
-            });
-        });
+        // Renderiza o gráfico quando a página carrega
+        document.addEventListener("DOMContentLoaded", renderChordDiagram);
 
-        // Inicializar o gráfico
-        $(document).ready(function() {
-            // Dados para o gráfico de rede
-            const graphData = {
-                programs: <?php echo json_encode($programs); ?>,
-                areas: <?php echo json_encode($areas); ?>,
-                matrix: <?php echo json_encode($matrix); ?>
-            };
-            
-            // Renderizar gráfico inicial
-            renderNetworkGraph(graphData);
-            
-            // Atualizar gráfico quando filtros mudarem
-            $("select, #search").on("change keyup", function() {
-                // Aqui você pode adicionar lógica para filtrar os dados
-                // antes de renderizar novamente
-                renderNetworkGraph(graphData);
-            });
-        });
-
-        // Inicializar o gráfico
-        $(document).ready(function() {
-            // Renderizar gráfico inicial com todos os dados
-            renderChordDiagram({
-                programs: <?php echo json_encode($programs); ?>,
-                areas: <?php echo json_encode($areas); ?>,
-                matrix: <?php echo json_encode($matrix); ?>
-            });
-            
-            // Atualizar gráfico quando filtros mudarem
-            $("select").change(filterChordData);
-            $("#search").keyup(filterChordData);
-            
-            // Gráfico de Status
-            var statusCtx = document.getElementById('statusChart').getContext('2d');
-            var statusChart = new Chart(statusCtx).Doughnut([
-                {
-                    value: <?php echo $stats['aprovados']; ?>,
-                    color: "#4CAF50",
-                    highlight: "#66BB6A",
-                    label: "Aprovados"
-                },
-                {
-                    value: <?php echo $stats['rejeitados']; ?>,
-                    color: "#f44336",
-                    highlight: "#ef5350",
-                    label: "Rejeitados"
-                },
-                {
-                    value: <?php echo $stats['em_analise']; ?>,
-                    color: "#2196F3",
-                    highlight: "#42A5F5",
-                    label: "Em Análise"
-                }
-            ], {
-                responsive: true,
-                animationSteps: 50,
-                tooltipTemplate: "<%= label %>: <%= value %> (<%= Math.round(circumference / 6.283 * 100) %>%)"
-            });
-        });
+        // Função para atualizar o gráfico com dados filtrados
+        function updateChordDiagram(filteredData) {
+            // Aqui você precisaria processar os dados filtrados como fez no PHP
+            // e então chamar renderChordDiagram() com os novos dados
+            console.log("Dados filtrados recebidos:", filteredData);
+            // renderChordDiagram(filteredData);
+        }
     </script>
 </body>
-</html>
+</html> 
