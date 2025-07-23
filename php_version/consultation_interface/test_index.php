@@ -10,13 +10,11 @@ ini_set('default_charset', 'UTF-8');
 function readCSV($filename) {
     $data = array();
     
-    // Verifica se o arquivo existe e é legível
     if (!file_exists($filename) || !is_readable($filename)) {
         trigger_error("Arquivo CSV não encontrado ou não pode ser lido: " . $filename, E_USER_WARNING);
         return $data;
     }
     
-    // Lê o conteúdo do arquivo e converte para UTF-8 explicitamente
     $content = file_get_contents($filename);
     $encoding = mb_detect_encoding($content, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true);
     
@@ -24,17 +22,15 @@ function readCSV($filename) {
         $content = mb_convert_encoding($content, 'UTF-8', $encoding ?: 'auto');
     }
     
-    // Remove BOM se existir
     $bom = pack('H*','EFBBBF');
     $content = preg_replace("/^$bom/", '', $content);
     
-    // Escreve o conteúdo convertido em um arquivo temporário
     $tempFile = tempnam(sys_get_temp_dir(), 'csv_');
     file_put_contents($tempFile, $content);
     
     if (($handle = fopen($tempFile, "r")) !== FALSE) {
-        // Lê o cabeçalho
-        if (($header = fgetcsv($handle, 0, ";")) === false) {
+        $header = fgetcsv($handle, 0, ";");
+        if ($header === false) {
             fclose($handle);
             unlink($tempFile);
             return $data;
@@ -42,7 +38,6 @@ function readCSV($filename) {
         
         $header = array_map('trim', $header);
         
-        // Lê as linhas de dados
         while (($row = fgetcsv($handle, 0, ";")) !== FALSE) {
             if (count($header) == count($row)) {
                 $data[] = array_combine($header, $row);
@@ -94,7 +89,7 @@ $filters = array(
     'programa' => isset($_GET['programa']) ? $_GET['programa'] : '',
     'area' => isset($_GET['area']) ? $_GET['area'] : '',
     'status' => isset($_GET['status']) ? $_GET['status'] : '',
-    'classificacao' => isset($_GET['classificacao']) ? $_GET['classificacao'] : ''
+    'professor' => isset($_GET['professor']) ? $_GET['professor'] : ''
 );
 
 $filteredData = $data;
@@ -103,11 +98,16 @@ foreach ($filters as $field => $value) {
         if ($field == 'search') {
             $filteredData = filterByTerm($filteredData, $value);
         } else {
-            $fieldName = ($field == 'classificacao') ? 'Classificação' : ucfirst($field);
+            $fieldName = ($field == 'professor') ? 'Usuário' : ucfirst($field);
             $filteredData = filterByField($filteredData, $fieldName, $value);
         }
     }
 }
+
+// Remover registros "Em Análise" da tabela
+$filteredData = array_filter($filteredData, function($row) {
+    return isset($row['Status']) && $row['Status'] !== 'Em Análise';
+});
 
 // Preparar dados para visualização
 $stats = array(
@@ -127,35 +127,34 @@ foreach ($data as $row) {
     }
 }
 
-// Preparar dados para o gráfico de corda
-// Preparar dados para o gráfico de corda
-$programRelations = array();
-foreach ($data as $row) {
-    if (!isset($row['Programa'])) continue;
+// Preparar dados para o gráfico de corda (Linha de Pesquisa x Área)
+$researchRelations = array();
+foreach ($filteredData as $row) {
+    if (!isset($row['Linha de Pesquisa']) || !isset($row['Área'])) continue;
     
-    $program = $row['Programa'];
-    $area = $row['Área'] ?? 'N/A';
+    $linha = $row['Linha de Pesquisa'];
+    $area = $row['Área'];
     
-    if (!isset($programRelations[$program])) {
-        $programRelations[$program] = array();
+    if (!isset($researchRelations[$linha])) {
+        $researchRelations[$linha] = array();
     }
-    $programRelations[$program][$area] = ($programRelations[$program][$area] ?? 0) + 1;
+    $researchRelations[$linha][$area] = ($researchRelations[$linha][$area] ?? 0) + 1;
 }
 
 // Converter para formato do chord diagram
 $allItems = array_values(array_unique(array_merge(
-    array_keys($programRelations),
-    array_keys(array_merge(...array_values($programRelations)))
+    array_keys($researchRelations),
+    array_keys(array_merge(...array_values($researchRelations)))
 )));
 
 $matrix = array_fill(0, count($allItems), array_fill(0, count($allItems), 0));
 
-foreach ($programRelations as $program => $relations) {
-    $i = array_search($program, $allItems);
+foreach ($researchRelations as $linha => $relations) {
+    $i = array_search($linha, $allItems);
     foreach ($relations as $area => $count) {
         $j = array_search($area, $allItems);
         $matrix[$i][$j] += $count;
-        $matrix[$j][$i] += $count; // Adiciona a relação inversa para simetria
+        $matrix[$j][$i] += $count;
     }
 }
 
@@ -163,7 +162,7 @@ foreach ($programRelations as $program => $relations) {
 $programas = array();
 $areasFiltro = array();
 $statusList = array();
-$classificacoes = array();
+$professores = array();
 
 foreach ($data as $row) {
     if (isset($row['Programa']) && !in_array($row['Programa'], $programas)) {
@@ -175,15 +174,15 @@ foreach ($data as $row) {
     if (isset($row['Status']) && !in_array($row['Status'], $statusList)) {
         $statusList[] = $row['Status'];
     }
-    if (isset($row['Classificação']) && !in_array($row['Classificação'], $classificacoes)) {
-        $classificacoes[] = $row['Classificação'];
+    if (isset($row['Usuário']) && !in_array($row['Usuário'], $professores)) {
+        $professores[] = $row['Usuário'];
     }
 }
 
 sort($programas);
 sort($areasFiltro);
 sort($statusList);
-sort($classificacoes);
+sort($professores);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -196,7 +195,6 @@ sort($classificacoes);
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
     <style>
-        /* Tema Escuro Uniforme - SC2C.Aero */
         body {
             font-family: Arial, sans-serif;
             background-color: #121212;
@@ -234,41 +232,7 @@ sort($classificacoes);
             color: #4A86E8;
             margin-top: 0;
         }
-        .network-container {
-            width: 100%;
-            height: 600px;
-            margin: 20px 0;
-            border: 1px solid #444;
-            border-radius: 4px;
-            background: #252525;
-        }
-
-        .graph-legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            color: #e0e0e0;
-        }
-
-        .legend-color {
-            width: 15px;
-            height: 15px;
-            margin-right: 5px;
-            border-radius: 3px;
-        }
-        .container {
-            max-width: none;
-            width: 98%;
-            margin: 0 auto;
-            padding: 0 10px;
-        }
+        
         .chord-container {
             width: 100%;
             min-height: 600px;
@@ -323,6 +287,7 @@ sort($classificacoes);
             margin-right: 5px;
             border-radius: 3px;
         }
+        
         .panel {
             background-color: #1e1e1e;
             border-radius: 8px;
@@ -495,31 +460,6 @@ sort($classificacoes);
             background-color: #1976d2;
         }
         
-        .btn-success {
-            background-color: #28a745;
-        }
-        
-        .btn-info {
-            background-color: #17a2b8;
-        }
-        
-        .btn-warning {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        
-        .btn-danger {
-            background-color: #d32f2f;
-        }
-        
-        .download-buttons, .manual-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 15px 0;
-        }
-        
         @media (max-width: 768px) {
             .logo-title-container {
                 flex-direction: column;
@@ -554,7 +494,7 @@ sort($classificacoes);
         <div class="panel">
             <div class="filter-section">
                 <h2>Filtros</h2>
-                <form method="GET">
+                <form method="GET" id="filterForm">
                     <div class="filter-row">
                         <div class="filter-group">
                             <label for="search">Busca Geral</label>
@@ -596,12 +536,12 @@ sort($classificacoes);
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label for="classificacao">Classificação</label>
-                            <select id="classificacao" name="classificacao">
-                                <option value="">Todas</option>
-                                <?php foreach ($classificacoes as $class): ?>
-                                    <option value="<?php echo htmlspecialchars($class); ?>" <?php echo $filters['classificacao'] == $class ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($class); ?>
+                            <label for="professor">Professor</label>
+                            <select id="professor" name="professor">
+                                <option value="">Todos</option>
+                                <?php foreach ($professores as $prof): ?>
+                                    <option value="<?php echo htmlspecialchars($prof); ?>" <?php echo $filters['professor'] == $prof ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($prof); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -634,12 +574,11 @@ sort($classificacoes);
             </div>
             
             <div class="chart-container">
-                <h2>Relação Programas x Áreas</h2>
+                <h2>Relação Linhas de Pesquisa x Áreas</h2>
                 <div id="chordDiagram" class="chord-container"></div>
                 <div id="chordTooltip" class="chord-tooltip"></div>
                 <div id="chordLegend" class="chord-legend"></div>
             </div>
-            
             
             <h2>Resultados (<?php echo count($filteredData); ?> registros)</h2>
             <div class="table-container">
@@ -652,7 +591,6 @@ sort($classificacoes);
                             <th>Usuário</th>
                             <th>Domínio</th>
                             <th>Subdomínio</th>
-                            <th>Classificação</th>
                             <th>Score</th>
                             <th>Status</th>
                         </tr>
@@ -665,8 +603,13 @@ sort($classificacoes);
                                 <td><?php echo isset($row['Linha de Pesquisa']) ? htmlspecialchars($row['Linha de Pesquisa']) : ''; ?></td>
                                 <td><?php echo isset($row['Usuário']) ? htmlspecialchars($row['Usuário']) : ''; ?></td>
                                 <td><?php echo isset($row['Domínio']) ? htmlspecialchars($row['Domínio']) : ''; ?></td>
-                                <td><?php echo isset($row['Subdomínio']) ? htmlspecialchars($row['Subdomínio']) : ''; ?></td>
-                                <td><?php echo isset($row['Classificação']) ? htmlspecialchars($row['Classificação']) : ''; ?></td>
+                                <td>
+                                    <?php 
+                                    $subdomain = isset($row['Subdomínio']) ? htmlspecialchars($row['Subdomínio']) : '';
+                                    $classification = isset($row['Classificação']) ? htmlspecialchars($row['Classificação']) : '';
+                                    echo $subdomain . ($subdomain && $classification ? ' ' : '') . $classification;
+                                    ?>
+                                </td>
                                 <td>
                                     <?php if (isset($row['Score'])): ?>
                                         <div class="score-bar">
@@ -689,7 +632,7 @@ sort($classificacoes);
                         <?php endforeach; ?>
                         <?php if (empty($filteredData)): ?>
                             <tr>
-                                <td colspan="9" style="text-align: center;">Nenhum resultado encontrado com os filtros aplicados</td>
+                                <td colspan="8" style="text-align: center;">Nenhum resultado encontrado com os filtros aplicados</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -699,140 +642,50 @@ sort($classificacoes);
     </div>
 
     <script>
-        function loadCSVData() {
-            fetch('get_csv_data.php') // Arquivo PHP que lê o CSV
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        alert("Nenhum dado encontrado no CSV!");
-                        return;
-                    }
-
-                    const headerRow = document.getElementById('headerRow');
-                    const tableBody = document.getElementById('tableBody');
-                    const columnSelect = document.getElementById('columnSelect');
-
-                    // Cria cabeçalhos da tabela e opções do filtro
-                    Object.keys(data[0]).forEach(key => {
-                        const th = document.createElement('th');
-                        th.textContent = key;
-                        headerRow.appendChild(th);
-
-                        const option = document.createElement('option');
-                        option.value = key;
-                        option.textContent = key;
-                        columnSelect.appendChild(option);
-                    });
-
-                    // Preenche as linhas da tabela
-                    data.forEach(row => {
-                        const tr = document.createElement('tr');
-                        Object.values(row).forEach(value => {
-                            const td = document.createElement('td');
-                            td.textContent = value;
-                            tr.appendChild(td);
-                        });
-                        tableBody.appendChild(tr);
-                    });
-                })
-                .catch(error => console.error('Erro ao carregar CSV:', error));
-        }
-
-        // Filtra a tabela com base no input de busca
-        function filterTable() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const column = document.getElementById('columnSelect').value;
-            const rows = document.getElementById('tableBody').getElementsByTagName('tr');
-
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                let found = false;
-
-                for (let j = 0; j < cells.length; j++) {
-                    if (column === 'all' || j === Array.from(document.getElementById('headerRow').children).findIndex(th => th.textContent === column)) {
-                        if (cells[j].textContent.toLowerCase().includes(input)) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                rows[i].style.display = found ? '' : 'none';
-            }
-        }
-
-        // Carrega os dados quando a página é aberta
-        window.onload = loadCSVData;        
-        function applyFilters() {
-            const filters = {
-                programa: document.getElementById("programa").value,
-                area: document.getElementById("area").value,
-                status: document.getElementById("status").value,
-                classificacao: document.getElementById("classificacao").value
-            };
-            
-            fetch(`get_filtered_data.php?${new URLSearchParams(filters)}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Processa os dados como no PHP
-                    const { matrix, labels } = processDataForChord(data);
-                    updateChordDiagram({ matrix, labels });
-                });
-        }        
-        // Dados preparados no PHP - precisamos passá-los para o JavaScript
+        // Dados iniciais do chord diagram
         const chordData = {
             matrix: <?php echo json_encode($matrix); ?>,
             labels: <?php echo json_encode($allItems); ?>
         };
 
-        // Cores para os grupos (você pode personalizar)
+        // Cores para os grupos
         const colorScheme = d3.scaleOrdinal(d3.schemeCategory10);
 
         // Função para renderizar o chord diagram
-        function renderChordDiagram() {
-            // Limpa o container antes de renderizar
+        function renderChordDiagram(data) {
             d3.select("#chordDiagram").html("");
+            d3.select("#chordLegend").html("");
             
-            // Verifica se temos dados
-            if (chordData.matrix.length === 0 || chordData.labels.length === 0) {
+            if (data.matrix.length === 0 || data.labels.length === 0) {
                 console.warn("Sem dados para renderizar o chord diagram");
                 return;
             }
             
-            // Configurações do gráfico
             const width = document.getElementById("chordDiagram").clientWidth;
             const height = Math.min(width, 600);
             const outerRadius = Math.min(width, height) * 0.5 - 40;
             const innerRadius = outerRadius - 30;
             
-            // Cria o layout do chord
             const chord = d3.chord()
                 .padAngle(0.05)
                 .sortSubgroups(d3.descending);
             
-            // Cria o arc generator
             const arc = d3.arc()
                 .innerRadius(innerRadius)
                 .outerRadius(outerRadius);
             
-            // Cria o ribbon generator
             const ribbon = d3.ribbon()
                 .radius(innerRadius);
             
-            // Cria o SVG
             const svg = d3.select("#chordDiagram").append("svg")
                 .attr("width", width)
                 .attr("height", height)
                 .attr("viewBox", [-width / 2, -height / 2, width, height])
                 .attr("style", "max-width: 100%; height: auto;");
             
-            // Adiciona um grupo para o gráfico
             const g = svg.append("g");
+            const chords = chord(data.matrix);
             
-            // Computa os relacionamentos
-            const chords = chord(chordData.matrix);
-            
-            // Adiciona os grupos (arcos externos)
             const group = g.append("g")
                 .selectAll("g")
                 .data(chords.groups)
@@ -842,7 +695,6 @@ sort($classificacoes);
                 .attr("fill", d => colorScheme(d.index))
                 .attr("d", arc)
                 .on("mouseover", function(d) {
-                    // Destaca este grupo e suas conexões
                     d3.select(this).attr("stroke", "#fff").attr("stroke-width", 2);
                     ribbonGroup.filter(dd => dd.source.index === d.index || dd.target.index === d.index)
                         .attr("stroke", "#fff")
@@ -853,7 +705,6 @@ sort($classificacoes);
                     ribbonGroup.attr("stroke", null);
                 });
             
-            // Adiciona os tiques (rótulos)
             group.append("text")
                 .each(d => { d.angle = (d.startAngle + d.endAngle) / 2; })
                 .attr("dy", ".35em")
@@ -863,11 +714,10 @@ sort($classificacoes);
                     ${d.angle > Math.PI ? "rotate(180)" : ""}
                 `)
                 .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-                .text(d => chordData.labels[d.index])
+                .text(d => data.labels[d.index])
                 .style("font-size", "10px")
                 .style("fill", "#e0e0e0");
             
-            // Adiciona as conexões (ribbons)
             const ribbonGroup = g.append("g")
                 .attr("fill-opacity", 0.8)
                 .selectAll("path")
@@ -877,12 +727,11 @@ sort($classificacoes);
                 .attr("fill", d => colorScheme(d.source.index))
                 .attr("stroke", "#333")
                 .on("mouseover", function(d) {
-                    // Mostra tooltip com informações
                     const tooltip = d3.select("#chordTooltip");
                     tooltip.style("display", "block")
                         .html(`
-                            <strong>${chordData.labels[d.source.index]}</strong> → 
-                            <strong>${chordData.labels[d.target.index]}</strong><br>
+                            <strong>${data.labels[d.source.index]}</strong> → 
+                            <strong>${data.labels[d.target.index]}</strong><br>
                             Valor: ${d.source.value}
                         `);
                 })
@@ -895,10 +744,9 @@ sort($classificacoes);
                     d3.select("#chordTooltip").style("display", "none");
                 });
             
-            // Cria a legenda
             const legend = d3.select("#chordLegend");
             legend.selectAll(".chord-legend-item")
-                .data(chordData.labels)
+                .data(data.labels)
                 .join("div")
                 .attr("class", "chord-legend-item")
                 .html((d, i) => `
@@ -907,16 +755,41 @@ sort($classificacoes);
                 `);
         }
 
-        // Renderiza o gráfico quando a página carrega
-        document.addEventListener("DOMContentLoaded", renderChordDiagram);
-
-        // Função para atualizar o gráfico com dados filtrados
-        function updateChordDiagram(filteredData) {
-            // Aqui você precisaria processar os dados filtrados como fez no PHP
-            // e então chamar renderChordDiagram() com os novos dados
-            console.log("Dados filtrados recebidos:", filteredData);
-            // renderChordDiagram(filteredData);
+        // Função para atualizar o chord com filtros
+        function updateChordDiagram() {
+            const filters = {
+                programa: document.getElementById("programa").value,
+                area: document.getElementById("area").value,
+                status: document.getElementById("status").value,
+                professor: document.getElementById("professor").value
+            };
+            
+            fetch(`?${new URLSearchParams(filters)}`)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const script = doc.querySelector('script:last-of-type');
+                    if (script) {
+                        const match = script.textContent.match(/const chordData = ({[\s\S]*?});/);
+                        if (match) {
+                            const newChordData = JSON.parse(match[1]);
+                            renderChordDiagram(newChordData);
+                        }
+                    }
+                })
+                .catch(error => console.error('Erro ao atualizar chord diagram:', error));
         }
+
+        // Renderiza o gráfico inicial
+        document.addEventListener("DOMContentLoaded", () => renderChordDiagram(chordData));
+
+        // Adiciona evento para atualizar o gráfico quando o formulário for enviado
+        document.getElementById("filterForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            updateChordDiagram();
+            e.target.submit(); // Submete o formulário normalmente após atualizar o gráfico
+        });
     </script>
 </body>
-</html> 
+</html>
