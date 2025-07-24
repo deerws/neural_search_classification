@@ -1174,6 +1174,7 @@ function formatSubdomain($subdomain, $classification) {
             
             // Exportar arquivo
             XLSX.writeFile(workbook, fileName);
+            alert(`Arquivo "${fileName}" gerado com sucesso!\n\nTotal de linhas exportadas: ${relatedRows.length}`);
         }
 
         // Renderiza o gráfico inicial
