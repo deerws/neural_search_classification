@@ -221,6 +221,66 @@ function formatSubdomain($subdomain, $classification) {
             max-width: none;
             padding: 0 15px;
         }
+                .instructions-panel {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+        }
+
+        .instructions-panel h3 {
+            color: #4a86e8;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .instructions-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+
+        .instruction-column {
+            flex: 1;
+            min-width: 300px;
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+
+        .instruction-card {
+            background-color: #252525;
+            border-radius: 6px;
+            padding: 15px;
+            height: 100%;
+            border: 1px solid #444;
+        }
+
+        .instruction-card h4 {
+            color: #4a86e8;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 8px;
+        }
+
+        .instruction-card ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .instruction-card li {
+            margin-bottom: 8px;
+            color: #d0d0d0;
+        }
+
+        .instruction-card li:last-child {
+            margin-bottom: 0;
+        }
+
         
         .header-container {
             display: flex;
@@ -650,6 +710,41 @@ function formatSubdomain($subdomain, $classification) {
                 Participe da Indexação
             </a>
         </div>
+                <!-- SEÇÃO DE INSTRUÇÕES DE USO -->
+        <div class="instructions-panel">
+            <h3>Instruções de Uso</h3>
+            <div class="instructions-row">
+                <div class="instruction-column">
+                    <div class="instruction-card">
+                        <h4>1. Filtragem de Dados</h4>
+                        <ul>
+                            <li>Utilize os filtros para encontrar os registros desejados</li>
+                            <li>Você pode filtrar por Programa, Área, Status e outros critérios</li>
+                            <li>Use a busca geral para pesquisar termos em qualquer campo</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="instruction-column">
+                    <div class="instruction-card">
+                        <h4>2. Visualização de Relacionamentos</h4>
+                        <ul>
+                            <li>O gráfico de corda mostra as relações entre Programas e Áreas de Taxonomia</li>
+                            <li>Passe o mouse sobre as conexões para ver detalhes</li>
+                            <li>Use a legenda para identificar os elementos do gráfico</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="instruction-column">
+                    <div class="instruction-card">
+                        <h4>3. Exportação de Dados</h4>
+                        <ul>
+                            <li>Selecione linhas específicas marcando as caixas de seleção</li>
+                            <li>As linhas relacionadas aparecerão na tabela inferior</li>
+                            <li>Use o botão "Exportar Excel" para baixar os dados filtrados</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         
         <div class="panel">
             <div class="filter-section">
