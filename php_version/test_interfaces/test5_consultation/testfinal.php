@@ -51,57 +51,6 @@ function readCSV($filename) {
     return $data;
 }
 
-// Função para exportar dados filtrados como CSV
-function exportCSV($data, $filename = 'exported_data.csv') {
-    header('Content-Type: text/csv; charset=UTF-8');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
-    
-    $output = fopen('php://output', 'w');
-    if (!empty($data)) {
-        fputcsv($output, array_keys($data[0]), ';');
-        foreach ($data as $row) {
-            fputcsv($output, $row, ';');
-        }
-    }
-    fclose($output);
-    exit;
-}
-
-// Verificar se é uma requisição de exportação
-if (isset($_GET['export']) && $_GET['export'] === 'csv') {
-    $csvFile = 'final_aprovações_BACKUP_1_updated.csv';
-    $data = file_exists($csvFile) ? readCSV($csvFile) : array();
-    
-    // Aplicar filtros para exportação
-    $filters = array(
-        'search' => isset($_GET['search']) ? $_GET['search'] : '',
-        'programa' => isset($_GET['programa']) ? $_GET['programa'] : '',
-        'area' => isset($_GET['area']) ? $_GET['area'] : '',
-        'status' => isset($_GET['status']) ? $_GET['status'] : '',
-        'professor' => isset($_GET['professor']) ? $_GET['professor'] : '',
-        'segmento' => isset($_GET['segmento']) ? $_GET['segmento'] : ''
-    );
-
-    $filteredData = $data;
-    foreach ($filters as $field => $value) {
-        if (!empty($value)) {
-            if ($field == 'search') {
-                $filteredData = filterByTerm($filteredData, $value);
-            } else {
-                $fieldName = ($field == 'professor') ? 'Usuário' : ($field == 'segmento' ? 'Segmento' : ucfirst($field));
-                $filteredData = filterByField($filteredData, $fieldName, $value);
-            }
-        }
-    }
-    
-    // Remover registros "Em Análise" da exportação
-    $filteredData = array_filter($filteredData, function($row) {
-        return isset($row['Status']) && $row['Status'] !== 'Em Análise';
-    });
-    
-    exportCSV($filteredData);
-}
-
 // Funções auxiliares para filtros
 function filterByTerm($data, $term) {
     if (empty($term)) return $data;
@@ -131,7 +80,7 @@ function filterByField($data, $field, $value) {
 }
 
 // Carregar dados
-$csvFile = 'final_aprovações_BACKUP_1_updated.csv';
+$csvFile = 'final_aprovações_28_07_2025.csv';
 $data = file_exists($csvFile) ? readCSV($csvFile) : array();
 
 // Aplicar filtros
@@ -150,7 +99,7 @@ foreach ($filters as $field => $value) {
         if ($field == 'search') {
             $filteredData = filterByTerm($filteredData, $value);
         } else {
-            $fieldName = ($field == 'professor') ? 'Usuário' : ($field == 'segmento' ? 'Segmento' : ucfirst($field));
+            $fieldName = ($field == 'professor') ? 'Usuário' : ($field == 'segmento' ? 'Segmento' : ($field == 'area' ? 'Área' : ucfirst($field)));
             $filteredData = filterByField($filteredData, $fieldName, $value);
         }
     }
@@ -179,32 +128,31 @@ foreach ($data as $row) {
     }
 }
 
-// Preparar dados para o gráfico de corda (Linha de Pesquisa x Área)
+// Preparar dados para o gráfico de corda (Programa x Segmento)
 $researchRelations = array();
 foreach ($filteredData as $row) {
-    if (!isset($row['Linha de Pesquisa']) || !isset($row['Área'])) continue;
+    if (!isset($row['Programa']) || !isset($row['Segmento'])) continue;
     
-    $linha = $row['Linha de Pesquisa'];
-    $area = $row['Área'];
+    $programa = $row['Programa'];
+    $segmento = $row['Segmento'];
     
-    if (!isset($researchRelations[$linha])) {
-        $researchRelations[$linha] = array();
+    if (!isset($researchRelations[$programa])) {
+        $researchRelations[$programa] = array();
     }
-    $researchRelations[$linha][$area] = ($researchRelations[$linha][$area] ?? 0) + 1;
+    $researchRelations[$programa][$segmento] = ($researchRelations[$programa][$segmento] ?? 0) + 1;
 }
 
 // Converter para formato do chord diagram
-$allItems = array_values(array_unique(array_merge(
-    array_keys($researchRelations),
-    array_keys(array_merge(...array_values($researchRelations)))
-)));
+$programasUnicos = array_keys($researchRelations);
+$segmentosUnicos = array_keys(array_merge(...array_values($researchRelations)));
+$allItems = array_values(array_unique(array_merge($programasUnicos, $segmentosUnicos)));
 
 $matrix = array_fill(0, count($allItems), array_fill(0, count($allItems), 0));
 
-foreach ($researchRelations as $linha => $relations) {
-    $i = array_search($linha, $allItems);
-    foreach ($relations as $area => $count) {
-        $j = array_search($area, $allItems);
+foreach ($researchRelations as $programa => $relations) {
+    $i = array_search($programa, $allItems);
+    foreach ($relations as $segmento => $count) {
+        $j = array_search($segmento, $allItems);
         $matrix[$i][$j] += $count;
         $matrix[$j][$i] += $count;
     }
@@ -212,7 +160,7 @@ foreach ($researchRelations as $linha => $relations) {
 
 // Obter valores únicos para filtros
 $programas = array();
-$areasFiltro = array();
+$areasConcentracao = array();
 $statusList = array();
 $professores = array();
 $segmentos = array();
@@ -221,8 +169,8 @@ foreach ($data as $row) {
     if (isset($row['Programa']) && !in_array($row['Programa'], $programas) && !empty($row['Programa'])) {
         $programas[] = $row['Programa'];
     }
-    if (isset($row['Área']) && !in_array($row['Área'], $areasFiltro) && !empty($row['Área'])) {
-        $areasFiltro[] = $row['Área'];
+    if (isset($row['Área']) && !in_array($row['Área'], $areasConcentracao) && !empty($row['Área'])) {
+        $areasConcentracao[] = $row['Área'];
     }
     if (isset($row['Status']) && !in_array($row['Status'], $statusList) && !empty($row['Status'])) {
         $statusList[] = $row['Status'];
@@ -236,7 +184,7 @@ foreach ($data as $row) {
 }
 
 sort($programas);
-sort($areasFiltro);
+sort($areasConcentracao);
 sort($statusList);
 sort($professores);
 sort($segmentos);
@@ -244,9 +192,7 @@ sort($segmentos);
 // Função para formatar Subdomínio
 function formatSubdomain($subdomain, $classification) {
     $value = trim($classification);
-    // Remove prefixos "NASA X", "ACARE X", ou "ACARE Manual X"
     $value = preg_replace('/^(ACARE|NASA)\s*(Manual\s*)?\d+:/i', '', $value);
-    // Adiciona o código do subdomínio no início
     $code = trim($subdomain);
     return $code . ': ' . trim($value);
 }
@@ -260,6 +206,7 @@ function formatSubdomain($subdomain, $classification) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
         body {
@@ -271,12 +218,13 @@ function formatSubdomain($subdomain, $classification) {
         
         .container-fluid {
             width: 100%;
-            max-width: none; /* Remove limite de largura do Bootstrap */
+            max-width: none;
             padding: 0 15px;
         }
         
         .header-container {
             display: flex;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
         }
@@ -285,7 +233,6 @@ function formatSubdomain($subdomain, $classification) {
             display: flex;
             align-items: center;
             gap: 20px;
-            margin-bottom: 20px;
         }
         
         .header-logo {
@@ -302,8 +249,26 @@ function formatSubdomain($subdomain, $classification) {
         .subtitle {
             font-style: italic;
             font-size: 18px;
-            color: #4A86E8;
+            color: #4a86e8;
             margin-top: 0;
+        }
+        
+        .participate-button {
+            background-color: #1976d2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .participate-button:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            text-decoration: none;
+            color: white;
         }
         
         .chord-container {
@@ -341,24 +306,47 @@ function formatSubdomain($subdomain, $classification) {
         }
         
         .chord-legend {
+            background: #252525;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-            justify-content: center;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .legend-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .legend-section h4 {
+            color: #4a86e8;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
         .chord-legend-item {
             display: flex;
             align-items: center;
             font-size: 12px;
+            margin-bottom: 8px;
         }
 
         .chord-legend-color {
             width: 15px;
             height: 15px;
-            margin-right: 5px;
+            margin-right: 8px;
             border-radius: 3px;
+            border: 1px solid #fff;
+        }
+
+        #segmentosLegend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
         }
         
         .panel {
@@ -372,11 +360,11 @@ function formatSubdomain($subdomain, $classification) {
         }
         
         .filter-section {
-            background: #252525;
+            background: #1a1a1a;
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 5px;
-            border: 1px solid #444;
+            border: 1px solid #333;
         }
         
         .filter-row {
@@ -389,7 +377,7 @@ function formatSubdomain($subdomain, $classification) {
         .filter-group {
             flex: 1;
             min-width: 200px;
-            max-width: 33.33%; /* 3 blocos por linha */
+            max-width: 33.33%;
         }
         
         label {
@@ -418,7 +406,7 @@ function formatSubdomain($subdomain, $classification) {
         
         button {
             flex: 1;
-            max-width: 150px; /* Tamanho uniforme para botões */
+            max-width: 150px;
             background: #4CAF50;
             color: white;
             border: none;
@@ -474,16 +462,43 @@ function formatSubdomain($subdomain, $classification) {
         
         .table-container {
             width: 100%;
-            overflow-y: auto; /* Mantém rolagem vertical */
-            overflow-x: hidden; /* Remove rolagem horizontal */
+            overflow-y: auto;
+            overflow-x: auto;
             max-height: 75vh;
+            margin-bottom: 20px;
+        }
+        
+        .table-container::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 6px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .table-container {
+            scrollbar-color: #333 #1a1a1a;
+        }
+        
+        .related-table-section {
+            margin-top: 40px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: #252525;
-            table-layout: auto; /* Ajuste dinâmico das colunas */
+            table-layout: auto;
         }
         
         thead th {
@@ -499,7 +514,7 @@ function formatSubdomain($subdomain, $classification) {
             border: 1px solid #444;
             text-align: left;
             word-wrap: break-word;
-            max-width: 150px; /* Reduzido para evitar cortes */
+            max-width: 150px;
         }
         
         th {
@@ -530,7 +545,7 @@ function formatSubdomain($subdomain, $classification) {
         .status-em-analise { background: #2196F3; }
         
         .score-bar {
-            width: 80px; /* Reduzido para economizar espaço */
+            width: 80px;
             height: 10px;
             background: #444;
             border-radius: 5px;
@@ -553,14 +568,30 @@ function formatSubdomain($subdomain, $classification) {
             background-color: #17a2b8;
         }
         
+        .checkbox-column {
+            width: 5%;
+            text-align: center;
+        }
+        
         @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .participate-button {
+                margin-top: 15px;
+                width: 100%;
+                text-align: center;
+            }
+            
             .logo-title-container {
                 flex-direction: column;
                 text-align: center;
             }
             
             .filter-group {
-                max-width: 100%; /* Usa largura total em telas menores */
+                max-width: 100%;
             }
             
             .button-group {
@@ -574,16 +605,33 @@ function formatSubdomain($subdomain, $classification) {
             }
             
             th, td {
-                max-width: none; /* Remove limite em telas menores */
-                font-size: 12px; /* Reduz fonte para melhor ajuste */
+                max-width: none;
+                font-size: 12px;
             }
             
             .table-container {
-                overflow-x: auto; /* Permite rolagem horizontal em telas pequenas */
+                overflow-x: auto;
             }
             
             .score-bar {
-                width: 60px; /* Menor ainda em telas pequenas */
+                width: 60px;
+            }
+            
+            .checkbox-column {
+                width: 8%;
+            }
+            
+            .chord-legend {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .legend-section {
+                min-width: 100%;
+            }
+            
+            #segmentosLegend {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -598,6 +646,9 @@ function formatSubdomain($subdomain, $classification) {
                     <h2 class="subtitle">Taxonomia de Pesquisa - Consulta</h2>
                 </div>
             </div>
+            <a href="https://sc2c.ufsc.br/Approval_Module_SC2C/sc2c_module.php" target="_blank" class="participate-button">
+                Participe da Indexação
+            </a>
         </div>
         
         <div class="panel">
@@ -621,10 +672,10 @@ function formatSubdomain($subdomain, $classification) {
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label for="area">Área</label>
+                            <label for="area">Área de Concentração</label>
                             <select id="area" name="area">
                                 <option value="">Todas</option>
-                                <?php foreach ($areasFiltro as $area): ?>
+                                <?php foreach ($areasConcentracao as $area): ?>
                                     <option value="<?php echo htmlspecialchars($area); ?>" <?php echo $filters['area'] == $area ? 'selected' : ''; ?>>
                                         <?php echo htmlspecialchars($area); ?>
                                     </option>
@@ -656,9 +707,9 @@ function formatSubdomain($subdomain, $classification) {
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label for="segmento">Segmento</label>
+                            <label for="segmento">Área de Taxonomia</label>
                             <select id="segmento" name="segmento">
-                                <option value="" <?php echo empty($filters['segmento']) ? 'selected' : ''; ?>>Todos</option>
+                                <option value="" <?php echo empty($filters['segmento']) ? 'selected' : ''; ?>>Todas</option>
                                 <?php foreach ($segmentos as $segmento): ?>
                                     <option value="<?php echo htmlspecialchars($segmento); ?>" <?php echo $filters['segmento'] == $segmento ? 'selected' : ''; ?>>
                                         <?php echo htmlspecialchars($segmento); ?>
@@ -670,7 +721,6 @@ function formatSubdomain($subdomain, $classification) {
                     <div class="button-group">
                         <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
                         <button type="button" class="btn btn-default" onclick="window.location.href='?'">Limpar</button>
-                        <button type="submit" class="btn btn-export" name="export" value="csv">Exportar CSV</button>
                     </div>
                 </form>
             </div>
@@ -695,31 +745,44 @@ function formatSubdomain($subdomain, $classification) {
             </div>
             
             <div class="chart-container">
-                <h2>Relação Linhas de Pesquisa x Áreas</h2>
+                <h2>Relação Programas x Áreas de Taxonomia</h2>
                 <div id="chordDiagram" class="chord-container"></div>
                 <div id="chordTooltip" class="chord-tooltip"></div>
-                <div id="chordLegend" class="chord-legend"></div>
+                <div id="chordLegend" class="chord-legend">
+                    <div class="legend-section">
+                        <h4>Programas de Pós-Graduação</h4>
+                        <div id="programasLegend"></div>
+                    </div>
+                    <div class="legend-section">
+                        <h4>Áreas de Taxonomia</h4>
+                        <div id="segmentosLegend"></div>
+                    </div>
+                </div>
             </div>
             
             <h2>Resultados (<?php echo count($filteredData); ?> registros)</h2>
             <div class="table-container">
-                <table>
+                <table id="approvalsTable">
                     <thead>
                         <tr>
-                            <th style="width: 18%;">Programa</th>
-                            <th style="width: 18%;">Área</th>
-                            <th style="width: 18%;">Linha de Pesquisa</th>
-                            <th style="width: 12%;">Usuário</th>
-                            <th style="width: 18%;">Segmento</th>
-                            <th style="width: 12%;">Domínio</th>
-                            <th style="width: 12%;">Subdomínio</th>
-                            <th style="width: 8%;">Score</th>
+                            <th class="checkbox-column"></th>
+                            <th style="width: 17%;">Programa</th>
+                            <th style="width: 17%;">Área de Concentração</th>
+                            <th style="width: 17%;">Linha de Pesquisa</th>
+                            <th style="width: 11%;">Usuário</th>
+                            <th style="width: 17%;">Área de Taxonomia</th>
+                            <th style="width: 11%;">Domínio</th>
+                            <th style="width: 11%;">Subdomínio</th>
+                            <th style="width: 7%;">Score</th>
                             <th style="width: 4%;">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($filteredData as $row): ?>
-                            <tr>
+                        <?php foreach ($filteredData as $index => $row): ?>
+                            <tr data-segmento="<?php echo htmlspecialchars($row['Segmento'] ?? ''); ?>">
+                                <td class="checkbox-column">
+                                    <input type="checkbox" class="row-checkbox" data-index="<?php echo $index; ?>">
+                                </td>
                                 <td><?php echo isset($row['Programa']) ? htmlspecialchars($row['Programa']) : ''; ?></td>
                                 <td><?php echo isset($row['Área']) ? htmlspecialchars($row['Área']) : ''; ?></td>
                                 <td><?php echo isset($row['Linha de Pesquisa']) ? htmlspecialchars($row['Linha de Pesquisa']) : ''; ?></td>
@@ -749,10 +812,107 @@ function formatSubdomain($subdomain, $classification) {
                         <?php endforeach; ?>
                         <?php if (empty($filteredData)): ?>
                             <tr>
-                                <td colspan="9" style="text-align: center;">Nenhum resultado encontrado com os filtros aplicados</td>
+                                <td colspan="10" style="text-align: center;">Nenhum resultado encontrado com os filtros aplicados</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="related-table-section">
+                <h2>Linhas Relacionadas por Área de Taxonomia</h2>
+                <div class="filter-section">
+                    <h3>Filtros para Linhas Relacionadas</h3>
+                    <form id="relatedFilterForm">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="related_programa">Programa</label>
+                                <select id="related_programa" name="related_programa">
+                                    <option value="">Todos</option>
+                                    <?php foreach ($programas as $programa): ?>
+                                        <option value="<?php echo htmlspecialchars($programa); ?>">
+                                            <?php echo htmlspecialchars($programa); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="related_area">Área de Concentração</label>
+                                <select id="related_area" name="related_area">
+                                    <option value="">Todas</option>
+                                    <?php foreach ($areasConcentracao as $area): ?>
+                                        <option value="<?php echo htmlspecialchars($area); ?>">
+                                            <?php echo htmlspecialchars($area); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="related_status">Status</label>
+                                <select id="related_status" name="related_status">
+                                    <option value="">Todos</option>
+                                    <?php foreach ($statusList as $status): ?>
+                                        <option value="<?php echo htmlspecialchars($status); ?>">
+                                            <?php echo htmlspecialchars($status); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="related_professor">Professor</label>
+                                <select id="related_professor" name="related_professor">
+                                    <option value="">Todos</option>
+                                    <?php foreach ($professores as $prof): ?>
+                                        <option value="<?php echo htmlspecialchars($prof); ?>">
+                                            <?php echo htmlspecialchars($prof); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="related_segmento">Área de Taxonomia</label>
+                                <select id="related_segmento" name="related_segmento">
+                                    <option value="">Todas</option>
+                                    <?php foreach ($segmentos as $segmento): ?>
+                                        <option value="<?php echo htmlspecialchars($segmento); ?>">
+                                            <?php echo htmlspecialchars($segmento); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="filter-group"></div>
+                        </div>
+                        <div class="button-group">
+                            <button type="button" class="btn btn-primary" onclick="applyRelatedFilters()">Aplicar Filtros</button>
+                            <button type="button" class="btn btn-default" onclick="clearRelatedFilters()">Limpar</button>
+                            <button type="button" class="btn btn-export" onclick="exportRelatedTableToExcel()">Exportar Excel</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-container">
+                    <table id="relatedTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 18%;">Programa</th>
+                                <th style="width: 18%;">Área de Concentração</th>
+                                <th style="width: 18%;">Linha de Pesquisa</th>
+                                <th style="width: 12%;">Usuário</th>
+                                <th style="width: 18%;">Área de Taxonomia</th>
+                                <th style="width: 12%;">Domínio</th>
+                                <th style="width: 12%;">Subdomínio</th>
+                                <th style="width: 8%;">Score</th>
+                                <th style="width: 4%;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="relatedTableBody">
+                            <tr>
+                                <td colspan="9" style="text-align: center;">Nenhuma linha selecionada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -761,16 +921,23 @@ function formatSubdomain($subdomain, $classification) {
         // Dados iniciais do chord diagram
         const chordData = {
             matrix: <?php echo json_encode($matrix); ?>,
-            labels: <?php echo json_encode($allItems); ?>
+            labels: <?php echo json_encode($allItems); ?>,
+            programas: <?php echo json_encode($programasUnicos); ?>,
+            segmentos: <?php echo json_encode($segmentosUnicos); ?>
         };
 
-        // Cores para os grupos
+        // Dados completos do CSV para filtragem no lado do cliente
+        const allData = <?php echo json_encode($data); ?>;
+
+        // Cores para as áreas de taxonomia
         const colorScheme = d3.scaleOrdinal(d3.schemeCategory10);
+        const programaColor = '#e0e0e0'; // Cor neutra para programas
 
         // Função para renderizar o chord diagram
         function renderChordDiagram(data) {
             d3.select("#chordDiagram").html("");
-            d3.select("#chordLegend").html("");
+            d3.select("#programasLegend").html("");
+            d3.select("#segmentosLegend").html("");
             
             if (data.matrix.length === 0 || data.labels.length === 0) {
                 console.warn("Sem dados para renderizar o chord diagram");
@@ -808,7 +975,10 @@ function formatSubdomain($subdomain, $classification) {
                 .join("g");
             
             group.append("path")
-                .attr("fill", d => colorScheme(d.index))
+                .attr("fill", d => {
+                    const label = data.labels[d.index];
+                    return data.programas.includes(label) ? programaColor : colorScheme(data.segmentos.indexOf(label));
+                })
                 .attr("d", arc)
                 .on("mouseover", function(d) {
                     d3.select(this).attr("stroke", "#fff").attr("stroke-width", 2);
@@ -840,7 +1010,12 @@ function formatSubdomain($subdomain, $classification) {
                 .data(chords)
                 .join("path")
                 .attr("d", ribbon)
-                .attr("fill", d => colorScheme(d.source.index))
+                .attr("fill", d => {
+                    const sourceLabel = data.labels[d.source.index];
+                    const targetLabel = data.labels[d.target.index];
+                    return data.segmentos.includes(sourceLabel) ? colorScheme(data.segmentos.indexOf(sourceLabel)) :
+                           data.segmentos.includes(targetLabel) ? colorScheme(data.segmentos.indexOf(targetLabel)) : programaColor;
+                })
                 .attr("stroke", "#333")
                 .on("mouseover", function(d) {
                     const tooltip = d3.select("#chordTooltip");
@@ -860,113 +1035,20 @@ function formatSubdomain($subdomain, $classification) {
                     d3.select("#chordTooltip").style("display", "none");
                 });
             
-            const legend = d3.select("#chordLegend");
-            legend.selectAll(".chord-legend-item")
-                .data(data.labels)
+            // Renderizar legenda
+            const programasLegend = d3.select("#programasLegend");
+            programasLegend.selectAll(".chord-legend-item")
+                .data(data.programas)
                 .join("div")
                 .attr("class", "chord-legend-item")
-                .html((d, i) => `
-                    <span class="chord-legend-color" style="background:${colorScheme(i)}"></span>
+                .html(d => `
+                    <span class="chord-legend-color" style="background:${programaColor}"></span>
                     ${d}
                 `);
-        }
-
-        // Função para atualizar o chord com filtros
-        function renderChordDiagram(data) {
-            d3.select("#chordDiagram").html("");
-            d3.select("#chordLegend").html("");
             
-            if (data.matrix.length === 0 || data.labels.length === 0) {
-                console.warn("Sem dados para renderizar o chord diagram");
-                return;
-            }
-            
-            const width = document.getElementById("chordDiagram").clientWidth;
-            const height = Math.min(width, 600);
-            const outerRadius = Math.min(width, height) * 0.5 - 40;
-            const innerRadius = outerRadius - 30;
-            
-            const chord = d3.chord()
-                .padAngle(0.05)
-                .sortSubgroups(d3.descending);
-            
-            const arc = d3.arc()
-                .innerRadius(innerRadius)
-                .outerRadius(outerRadius);
-            
-            const ribbon = d3.ribbon()
-                .radius(innerRadius);
-            
-            const svg = d3.select("#chordDiagram").append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .attr("viewBox", [-width / 2, -height / 2, width, height])
-                .attr("style", "max-width: 100%; height: auto;");
-            
-            const g = svg.append("g");
-            const chords = chord(data.matrix);
-            
-            const group = g.append("g")
-                .selectAll("g")
-                .data(chords.groups)
-                .join("g");
-            
-            group.append("path")
-                .attr("fill", d => colorScheme(d.index))
-                .attr("d", arc)
-                .on("mouseover", function(d) {
-                    d3.select(this).attr("stroke", "#fff").attr("stroke-width", 2);
-                    ribbonGroup.filter(dd => dd.source.index === d.index || dd.target.index === d.index)
-                        .attr("stroke", "#fff")
-                        .attr("stroke-width", 2);
-                })
-                .on("mouseout", function(d) {
-                    d3.select(this).attr("stroke", null);
-                    ribbonGroup.attr("stroke", null);
-                });
-            
-            group.append("text")
-                .each(d => { d.angle = (d.startAngle + d.endAngle) / 2; })
-                .attr("dy", ".35em")
-                .attr("transform", d => `
-                    rotate(${d.angle * 180 / Math.PI - 90})
-                    translate(${outerRadius + 10})
-                    ${d.angle > Math.PI ? "rotate(180)" : ""}
-                `)
-                .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
-                .text(d => data.labels[d.index])
-                .style("font-size", "10px")
-                .style("fill", "#e0e0e0");
-            
-            const ribbonGroup = g.append("g")
-                .attr("fill-opacity", 0.8)
-                .selectAll("path")
-                .data(chords)
-                .join("path")
-                .attr("d", ribbon)
-                .attr("fill", d => colorScheme(d.source.index))
-                .attr("stroke", "#333")
-                .on("mouseover", function(d) {
-                    const tooltip = d3.select("#chordTooltip");
-                    tooltip.style("display", "block")
-                        .html(`
-                            <strong>${data.labels[d.source.index]}</strong> → 
-                            <strong>${data.labels[d.target.index]}</strong><br>
-                            Valor: ${d.source.value}
-                        `);
-                })
-                .on("mousemove", function() {
-                    d3.select("#chordTooltip")
-                        .style("left", (d3.event.pageX + 10) + "px")
-                        .style("top", (d3.event.pageY - 10) + "px");
-                })
-                .on("mouseout", function() {
-                    d3.select("#chordTooltip").style("display", "none");
-                });
-            
-            const legend = d3.select("#chordLegend");
-            legend.selectAll(".chord-legend-item")
-                .data(data.labels)
+            const segmentosLegend = d3.select("#segmentosLegend");
+            segmentosLegend.selectAll(".chord-legend-item")
+                .data(data.segmentos)
                 .join("div")
                 .attr("class", "chord-legend-item")
                 .html((d, i) => `
@@ -1002,13 +1084,155 @@ function formatSubdomain($subdomain, $classification) {
                 .catch(error => console.error('Erro ao atualizar chord diagram:', error));
         }
 
-        // Renderiza o gráfico inicial
-        document.addEventListener("DOMContentLoaded", () => renderChordDiagram(chordData));
+        // Função para aplicar filtros na tabela relacionada
+        function applyRelatedFilters() {
+            updateRelatedTable();
+        }
 
-        // Adiciona evento para atualizar o gráfico quando o formulário for enviado
+        // Função para limpar filtros da tabela relacionada
+        function clearRelatedFilters() {
+            document.getElementById('related_programa').value = '';
+            document.getElementById('related_area').value = '';
+            document.getElementById('related_status').value = '';
+            document.getElementById('related_professor').value = '';
+            document.getElementById('related_segmento').value = '';
+            updateRelatedTable();
+        }
+
+        // Função para atualizar a tabela de linhas relacionadas
+        function updateRelatedTable() {
+            const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+            const selectedSegmentos = new Set();
+            
+            checkboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const segmento = row.dataset.segmento;
+                if (segmento) {
+                    selectedSegmentos.add(segmento);
+                }
+            });
+            
+            const relatedTableBody = document.getElementById('relatedTableBody');
+            relatedTableBody.innerHTML = '';
+            
+            if (selectedSegmentos.size === 0) {
+                relatedTableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">Nenhuma linha selecionada</td></tr>';
+                return;
+            }
+            
+            // Obter valores dos filtros da tabela relacionada
+            const relatedFilters = {
+                programa: document.getElementById('related_programa').value,
+                area: document.getElementById('related_area').value,
+                status: document.getElementById('related_status').value,
+                professor: document.getElementById('related_professor').value,
+                segmento: document.getElementById('related_segmento').value
+            };
+            
+            let relatedRows = allData.filter(row => 
+                row['Status'] !== 'Em Análise' && selectedSegmentos.has(row['Segmento'])
+            );
+            
+            // Aplicar filtros adicionais
+            if (relatedFilters.programa) {
+                relatedRows = relatedRows.filter(row => row['Programa'] === relatedFilters.programa);
+            }
+            if (relatedFilters.area) {
+                relatedRows = relatedRows.filter(row => row['Área'] === relatedFilters.area);
+            }
+            if (relatedFilters.status) {
+                relatedRows = relatedRows.filter(row => row['Status'] === relatedFilters.status);
+            }
+            if (relatedFilters.professor) {
+                relatedRows = relatedRows.filter(row => row['Usuário'] === relatedFilters.professor);
+            }
+            if (relatedFilters.segmento) {
+                relatedRows = relatedRows.filter(row => row['Segmento'] === relatedFilters.segmento);
+            }
+            
+            if (relatedRows.length === 0) {
+                relatedTableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">Nenhum resultado encontrado com os filtros aplicados</td></tr>';
+                return;
+            }
+            
+            relatedRows.forEach(row => {
+                const statusClass = row['Status'] ? 
+                    'status-' + row['Status'].toLowerCase().replace(/[\sãõ]/g, match => match === 'ã' ? 'a' : match === 'õ' ? 'o' : '-') : '';
+                
+                const scoreHtml = row['Score'] ? `
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: ${parseFloat(row['Score']) * 100}%"></div>
+                    </div>
+                    ${row['Score']}
+                ` : '';
+                
+                const subdominio = row['Subdomínio'] && row['Classificação'] ? 
+                    `${row['Subdomínio'].trim()}: ${row['Classificação'].replace(/^(ACARE|NASA)\s*(Manual\s*)?\d+:/i, '').trim()}` : 
+                    '';
+                
+                relatedTableBody.innerHTML += `
+                    <tr>
+                        <td>${row['Programa'] || ''}</td>
+                        <td>${row['Área'] || ''}</td>
+                        <td>${row['Linha de Pesquisa'] || ''}</td>
+                        <td>${row['Usuário'] || ''}</td>
+                        <td>${row['Segmento'] || ''}</td>
+                        <td>${row['Domínio'] || ''}</td>
+                        <td>${subdominio}</td>
+                        <td>${scoreHtml}</td>
+                        <td><span class="status-badge ${statusClass}">${row['Status'] || ''}</span></td>
+                    </tr>
+                `;
+            });
+            
+            return relatedRows;
+        }
+
+        // Função para exportar a tabela relacionada para Excel
+        function exportRelatedTableToExcel() {
+            const relatedRows = updateRelatedTable();
+            
+            if (!relatedRows || relatedRows.length === 0) {
+                alert('Nenhuma linha disponível para exportação.');
+                return;
+            }
+            
+            const exportData = relatedRows.map(row => ({
+                Programa: row['Programa'] || '',
+                'Área de Concentração': row['Área'] || '',
+                'Linha de Pesquisa': row['Linha de Pesquisa'] || '',
+                Usuário: row['Usuário'] || '',
+                'Área de Taxonomia': row['Segmento'] || '',
+                Domínio: row['Domínio'] || '',
+                Subdomínio: row['Subdomínio'] && row['Classificação'] ? 
+                    `${row['Subdomínio'].trim()}: ${row['Classificação'].replace(/^(ACARE|NASA)\s*(Manual\s*)?\d+:/i, '').trim()}` : '',
+                Score: row['Score'] || '',
+                Status: row['Status'] || ''
+            }));
+            
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Linhas Relacionadas');
+            XLSX.write(workbook, 'linhas_relacionadas.xlsx');
+        }
+
+        // Renderiza o gráfico inicial
+        document.addEventListener("DOMContentLoaded", () => {
+            renderChordDiagram(chordData);
+            
+            document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateRelatedTable);
+            });
+        });
+
+        // Adiciona evento para atualizar o gráfico e resetar checkboxes
         document.getElementById("filterForm").addEventListener("submit", (e) => {
             e.preventDefault();
             updateChordDiagram();
+            document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateRelatedTable();
             e.target.submit();
         });
     </script>
