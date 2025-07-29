@@ -781,7 +781,6 @@ function formatSubdomain($subdomain, $classification) {
                             <li>Utilize os filtros para refinar os registros aprovados</li>
                             <li>Escolha Programa, Área de Concentração ou Área de Taxonomia</li>
                             <li>Use a Busca Geral para pesquisar termos em qualquer campo</li>
-                            <li>Os resultados atualizam sem recarregar a página</li>
                         </ul>
                     </div>
                 </div>
@@ -802,7 +801,6 @@ function formatSubdomain($subdomain, $classification) {
                         <ul>
                             <li>Aplique filtros para personalizar os resultados</li>
                             <li>Clique em "Exportar Excel" para baixar a tabela filtrada</li>
-                            <li>O arquivo Excel será formatado com cores e layout otimizado</li>
                         </ul>
                     </div>
                 </div>
