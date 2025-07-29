@@ -214,6 +214,7 @@ function formatSubdomain($subdomain, $classification) {
             background-color: #121212;
             color: #e0e0e0;
             padding: 20px;
+            margin-bottom: 100px; /* Espaço reservado para o footer */
         }
         
         .container-fluid {
@@ -221,7 +222,7 @@ function formatSubdomain($subdomain, $classification) {
             max-width: none;
             padding: 0 15px;
         }
-                .instructions-panel {
+        .instructions-panel {
             background-color: #1e1e1e;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
@@ -316,19 +317,30 @@ function formatSubdomain($subdomain, $classification) {
         .participate-button {
             background-color: #1976d2;
             color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 24px;
+            border-radius: 6px;
             text-decoration: none;
             font-size: 16px;
+            font-weight: 600;
             transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #4a86e8;
         }
         
         .participate-button:hover {
-            opacity: 0.85;
+            background-color: #4a86e8;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             text-decoration: none;
             color: white;
+        }
+        
+        .participate-button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
         }
         
         .chord-container {
@@ -633,6 +645,66 @@ function formatSubdomain($subdomain, $classification) {
             text-align: center;
         }
         
+        /* Footer Styles */
+        .body_footer {
+            background-color: #1e1e1e;
+            border-top: 1px solid #333;
+            padding: 20px 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+            position: relative;
+            bottom: 0;
+            margin-top: auto;
+        }
+        
+        .footer_container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .footer_logo_section {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .footer_logo {
+            width: 100px;
+            height: auto;
+        }
+        
+        .footer_info {
+            flex: 2;
+            min-width: 200px;
+            color: #d0d0d0;
+        }
+        
+        .footer_info h4 {
+            color: #4a86e8;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .footer_info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .footer_info a {
+            color: #4a86e8;
+            text-decoration: none;
+        }
+        
+        .footer_info a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -643,6 +715,7 @@ function formatSubdomain($subdomain, $classification) {
                 margin-top: 15px;
                 width: 100%;
                 text-align: center;
+                justify-content: center;
             }
             
             .logo-title-container {
@@ -693,6 +766,19 @@ function formatSubdomain($subdomain, $classification) {
             #segmentosLegend {
                 grid-template-columns: 1fr;
             }
+            
+            .footer_container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer_logo_section {
+                margin-bottom: 15px;
+            }
+            
+            .footer_info {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -707,10 +793,13 @@ function formatSubdomain($subdomain, $classification) {
                 </div>
             </div>
             <a href="https://sc2c.ufsc.br/Approval_Module_SC2C/sc2c_module.php" target="_blank" class="participate-button">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z"/>
+                </svg>
                 Participe da Indexação
             </a>
         </div>
-                <!-- SEÇÃO DE INSTRUÇÕES DE USO -->
+        <!-- SEÇÃO DE INSTRUÇÕES DE USO -->
         <div class="instructions-panel">
             <h3>Instruções de Uso</h3>
             <div class="instructions-row">
@@ -1011,6 +1100,23 @@ function formatSubdomain($subdomain, $classification) {
             </div>
         </div>
     </div>
+
+    <footer class="body_footer">
+        <div class="footer_container">
+            <div class="footer_logo_section">
+                <a href="https://ufsc.br/" target="_blank" rel="noopener">
+                    <img class="footer_logo" src="ufsc_logo.png" alt="Logo UFSC">
+                </a>
+            </div>
+            <div class="footer_info">
+                <h4>SC2C.Aero</h4>
+                <p>Santa Catarina's Center of Convergence for Aerospace Technologies</p>
+                <p><strong>Phone:</strong> +55 48 3721-4607</p>
+                <p><strong>Address:</strong> R. Eng. Agronômico Andrei Cristian Ferreira, s/n, CEP 88040-900</p>
+                <p><strong>Email:</strong> <a href="mailto:sc2c@contato.ufsc.br">sc2c@contato.ufsc.br</a></p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Dados iniciais do chord diagram
