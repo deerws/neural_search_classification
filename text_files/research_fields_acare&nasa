@@ -1,0 +1,332 @@
+    ACARE: {
+                'FLP': {
+                    name: 'Flight Physics (FLP)',
+                    subdomains: [
+                        { code: 'FLP.1', description: 'Computational Fluid Dynamics' },
+                        { code: 'FLP.2', description: 'Unsteady Aerodynamics' },
+                        { code: 'FLP.3', description: 'Airflow Control' },
+                        { code: 'FLP.4', description: 'High Lift Devices' },
+                        { code: 'FLP.5', description: 'Wing Design' },
+                        { code: 'FLP.6', description: 'Aerodynamics of External/Removable Items' },
+                        { code: 'FLP.7', description: 'Wind Tunnel Testing/Technology' },
+                        { code: 'FLP.8', description: 'Wind Tunnel Measuring Techniques' },
+                        { code: 'FLP.9', description: 'Computational Acoustics' },
+                        { code: 'FLP.10', description: 'External Noise Prediction' }
+                    ]
+                },
+                'AST': {
+                    name: 'Aerostructures (AST)',
+                    subdomains: [
+                        { code: 'AST.1', description: 'Metallic Materials & Basic Processes' },
+                        { code: 'AST.2', description: 'Non-Metallic Materials & Basic Processes' },
+                        { code: 'AST.3', description: 'Composite Materials & Basic Processes' },
+                        { code: 'AST.4', description: 'Advanced Manufacturing Processes & Technologies' },
+                        { code: 'AST.5', description: 'Structural Analysis and Design' },
+                        { code: 'AST.6', description: 'Aero-elasticity' },
+                        { code: 'AST.7', description: 'Buckling, Vibrations, and Acoustics' },
+                        { code: 'AST.8', description: 'Smart Materials and Structures' },
+                        { code: 'AST.9', description: 'Internal Noise Prediction' },
+                        { code: 'AST.10', description: 'Helicopter Aero-acoustics' },
+                        { code: 'AST.11', description: 'Noise Reduction' },
+                        { code: 'AST.12', description: 'Acoustic Measurements and Test Technology' },
+                        { code: 'AST.13', description: 'Aircraft Security' }
+                    ]
+                },
+                'PRO': {
+                    name: 'Propulsion (PRO)',
+                    subdomains: [
+                        { code: 'PRO.1', description: 'Performance' },
+                        { code: 'PRO.2', description: 'Turbomachinery/Propulsion Aerodynamics' },
+                        { code: 'PRO.3', description: 'Combustion' },
+                        { code: 'PRO.4', description: 'Air-breathing Propulsion' },
+                        { code: 'PRO.5', description: 'Heat Transfer' },
+                        { code: 'PRO.6', description: 'Nozzles, Vectored Thrust, Reheat' },
+                        { code: 'PRO.7', description: 'Engine Controls' },
+                        { code: 'PRO.8', description: 'Auxiliary Power Unit' },
+                        { code: 'PRO.9', description: 'Fuels and Lubricants' },
+                        { code: 'PRO.10', description: 'Test Bench Calibration' },
+                        { code: 'PRO.11', description: 'Engine Health Monitoring' },
+                        { code: 'PRO.12', description: 'Experimental Facilities & Measurement Techniques' },
+                        { code: 'PRO.13', description: 'Computational Methods' },
+                        { code: 'PRO.14', description: 'Emissions Pollution' },
+                        { code: 'PRO.15', description: 'Hydrogen in Aviation' },
+                        { code: 'PRO.16', description: 'Hybrid Electric Flight' }
+                    ]
+                },
+                'AVS': {
+                    name: 'Aircraft Avionics, Systems & Equipment (AVS)',
+                    subdomains: [
+                        { code: 'AVS.1', description: 'Avionics' },
+                        { code: 'AVS.2', description: 'Cockpit Systems, Visualization & Display Systems' },
+                        { code: 'AVS.3', description: 'Navigation/Flight Management/Autoland' },
+                        { code: 'AVS.4', description: 'Warning Systems' },
+                        { code: 'AVS.5', description: 'Electronics & Microelectronics for On-board Systems' },
+                        { code: 'AVS.6', description: 'Sensors Integration' },
+                        { code: 'AVS.7', description: 'Flight Data/Recording' },
+                        { code: 'AVS.8', description: 'Communications Systems' },
+                        { code: 'AVS.9', description: 'Identification' },
+                        { code: 'AVS.10', description: 'Avionics Integration' },
+                        { code: 'AVS.11', description: 'Optics, Optronics, Lasers, Image Processing' },
+                        { code: 'AVS.12', description: 'Electronic Library System' },
+                        { code: 'AVS.13', description: 'Aircraft Health & Usage Monitoring System' },
+                        { code: 'AVS.14', description: 'Smart Maintenance Systems' },
+                        { code: 'AVS.15', description: 'Lighting Systems' },
+                        { code: 'AVS.16', description: 'Aircraft Security' },
+                        { code: 'AVS.17', description: 'Electrical Power Generation, Distribution & Actuation' },
+                        { code: 'AVS.18', description: 'Pneumatic Systems' },
+                        { code: 'AVS.19', description: 'Passenger and Freight Systems' },
+                        { code: 'AVS.20', description: 'Environmental Control System' },
+                        { code: 'AVS.21', description: 'Water and Waste Systems' },
+                        { code: 'AVS.22', description: 'Fuel Systems' },
+                        { code: 'AVS.23', description: 'Landing Gear and Braking Systems' },
+                        { code: 'AVS.24', description: 'Fire Protection Systems' },
+                        { code: 'AVS.25', description: 'Hydraulic Systems' }
+                    ]
+                },
+                'FLM': {
+                    name: 'Flight Mechanics (FLM)',
+                    subdomains: [
+                        { code: 'FLM.1', description: 'Open-loop Aircraft Stability Analysis' },
+                        { code: 'FLM.2', description: 'Flight Control System' },
+                        { code: 'FLM.3', description: 'Aircraft Performance Analysis' },
+                        { code: 'FLM.4', description: 'Optimization of Aircraft Performance' },
+                        { code: 'FLM.5', description: 'System Failure and Damage Analysis' },
+                        { code: 'FLM.6', description: 'Environmental Hazard Analysis' }
+                    ]
+                },
+                'IDV': {
+                    name: 'Integrated Design & Validation (IDV)',
+                    subdomains: [
+                        { code: 'IDV.1', description: 'Methods and IT Tools for Collaborative Engineering' },
+                        { code: 'IDV.2', description: 'On-board Systems Engineering' },
+                        { code: 'IDV.3', description: 'Environmental and EM Compliance' },
+                        { code: 'IDV.4', description: 'Flight/Ground Tests' },
+                        { code: 'IDV.5', description: 'Life-cycle Integration' },
+                        { code: 'IDV.6', description: 'System Certification' },
+                        { code: 'IDV.7', description: 'Fault Tolerant Systems' },
+                        { code: 'IDV.8', description: 'Hazard Analysis' },
+                        { code: 'IDV.9', description: 'Safety Modelling' },
+                        { code: 'IDV.10', description: 'Air Safety Data Analysis' },
+                        { code: 'IDV.11', description: 'System Reliability' },
+                        { code: 'IDV.12', description: 'Security/Risk Analysis' },
+                        { code: 'IDV.13', description: 'Maintenance Modelling' },
+                        { code: 'IDV.14', description: 'Infra-red and Radar Signature Control' },
+                        { code: 'IDV.15', description: 'Advanced Information Processing' },
+                        { code: 'IDV.16', description: 'Collaborative Decision Making' },
+                        { code: 'IDV.17', description: 'Simulator Environments & Virtual Reality' },
+                        { code: 'IDV.18', description: 'Decision Support Systems' },
+                        { code: 'IDV.19', description: 'Information & Knowledge Management' },
+                        { code: 'IDV.20', description: 'Autonomous Operation' },
+                        { code: 'IDV.21', description: 'Aeronautical Software Engineering' },
+                        { code: 'IDV.22', description: 'Development of Operational Research Tools' },
+                        { code: 'IDV.23', description: 'Synthetic Environment & Virtual Reality Tools' },
+                        { code: 'IDV.24', description: 'Aircraft Performance Assessment' },
+                        { code: 'IDV.25', description: 'Airport Performance Assessment' },
+                        { code: 'IDV.26', description: 'Business Modelling' },
+                        { code: 'IDV.27', description: 'Numerical Models (including Fast Time Simulation)' },
+                        { code: 'IDV.28', description: 'Real Time Simulators' },
+                        { code: 'IDV.29', description: 'General Purpose Equipment' },
+                        { code: 'IDV.30', description: 'Reference Data for R&D and Live/RT Use' },
+                        { code: 'IDV.31', description: 'Methodology' },
+                        { code: 'IDV.32', description: 'Large Scale Validation Experiments/Platforms' },
+                        { code: 'IDV.33', description: 'EcoDesign & Engineering for Sustainability' }
+                    ]
+                },
+                'AOP': {
+                    name: 'Aircraft Operations (AOP)',
+                    subdomains: [
+                        { code: 'AOP.1', description: 'Air Traffic Management' },
+                        { code: 'AOP.2', description: 'Airports' },
+                        { code: 'AOP.3', description: 'Maintenance, Repair & Overhaul (MRO)' }
+                    ]
+                },
+                'UAS': {
+                    name: 'Unmanned Aerial Systems (UAS)',
+                    subdomains: [
+                        { code: 'UAS.1', description: 'UAS & Scaled Flight Testing' }
+                    ]
+                },
+                'HFA': {
+                    name: 'Human Factors (HFA)',
+                    subdomains: [
+                        { code: 'HFA.1', description: 'Human Factors Integration & Man-Machine Interface' },
+                        { code: 'HFA.2', description: 'Human Information Processing' },
+                        { code: 'HFA.3', description: 'Human Performance Modelling & Enhancement' },
+                        { code: 'HFA.4', description: 'Selection & Training' },
+                        { code: 'HFA.5', description: 'Human Survivability, Protection & Stress Effects' },
+                        { code: 'HFA.6', description: 'Human Element in Security' }
+                    ]
+                },
+                'ICS': {
+                    name: 'Innovative Concepts & Scenarios (ICS)',
+                    subdomains: [
+                        { code: 'ICS.1', description: 'Scenarios Analysis' },
+                        { code: 'ICS.2', description: 'Unconventional Configurations & New Aircraft Concepts' },
+                        { code: 'ICS.3', description: 'Breakthrough Technologies' },
+                        { code: 'ICS.4', description: 'Industry 4.0 to Industry 5.0' }
+                    ]
+                }
+            },
+            NASA: {
+                'PS': {
+                    name: 'Propulsion Systems',
+                    subdomains: [
+                        { code: 'PS.1', description: 'Chemical Propulsion' },
+                        { code: 'PS.2', description: 'Electric Space Propulsion' },
+                        { code: 'PS.3', description: 'Aero Propulsion' },
+                        { code: 'PS.4', description: 'Advanced Propulsion' }
+                    ]
+                },
+                'FCA': {
+                    name: 'Flight Computing & Avionics',
+                    subdomains: [
+                        { code: 'FCA.1', description: 'Avionics Component Technologies' },
+                        { code: 'FCA.2', description: 'Avionics Systems & Subsystems' },
+                        { code: 'FCA.3', description: 'Avionics Tools, Models & Analysis' }
+                    ]
+                },
+                'APES': {
+                    name: 'Aerospace Power & Energy Storage',
+                    subdomains: [
+                        { code: 'APES.1', description: 'Power Generation & Energy Conversion' },
+                        { code: 'APES.2', description: 'Energy Storage' },
+                        { code: 'APES.3', description: 'Power Management & Distribution' }
+                    ]
+                },
+                'RS': {
+                    name: 'Robotic Systems',
+                    subdomains: [
+                        { code: 'RS.1', description: 'Sensing & Perception' },
+                        { code: 'RS.2', description: 'Mobility' },
+                        { code: 'RS.3', description: 'Manipulation' },
+                        { code: 'RS.4', description: 'Human-Robot Interaction' },
+                        { code: 'RS.5', description: 'Autonomous Rendezvous & Docking' },
+                        { code: 'RS.6', description: 'Robotics Integration' }
+                    ]
+                },
+                'CNDT': {
+                    name: 'Communications, Navigation & Debris Tracking',
+                    subdomains: [
+                        { code: 'CNDT.1', description: 'Optical Communications' },
+                        { code: 'CNDT.2', description: 'Radio Frequency' },
+                        { code: 'CNDT.3', description: 'Internetworking' },
+                        { code: 'CNDT.4', description: 'Network Provided Position/Navigation/Timing' },
+                        { code: 'CNDT.5', description: 'Revolutionary Communications Technologies' },
+                        { code: 'CNDT.6', description: 'Ground-Based Debris Tracking & Management' },
+                        { code: 'CNDT.7', description: 'Acoustic Communications' }
+                    ]
+                },
+                'HLSH': {
+                    name: 'Human Health, Life Support & Habitation',
+                    subdomains: [
+                        { code: 'HLSH.1', description: 'Environmental Control & Life Support' },
+                        { code: 'HLSH.2', description: 'Extravehicular Activity Systems' },
+                        { code: 'HLSH.3', description: 'Human Health & Performance' },
+                        { code: 'HLSH.4', description: 'Environmental Monitoring & Safety' },
+                        { code: 'HLSH.5', description: 'Radiation' },
+                        { code: 'HLSH.6', description: 'Human Systems Integration' }
+                    ]
+                },
+                'EDS': {
+                    name: 'Exploration Destination Systems',
+                    subdomains: [
+                        { code: 'EDS.1', description: 'In-Situ Resource Utilization' },
+                        { code: 'EDS.2', description: 'Mission Infrastructure, Sustainability & Support' },
+                        { code: 'EDS.3', description: 'Mission Operations & Safety' }
+                    ]
+                },
+                'SI': {
+                    name: 'Sensors & Instruments',
+                    subdomains: [
+                        { code: 'SI.1', description: 'Remote Sensing Instruments' },
+                        { code: 'SI.2', description: 'Observatories' },
+                        { code: 'SI.3', description: 'In-Situ Instruments' }
+                    ]
+                },
+                'EDL': {
+                    name: 'Entry, Descent & Landing',
+                    subdomains: [
+                        { code: 'EDL.1', description: 'Aeroassist & Atmospheric Entry' },
+                        { code: 'EDL.2', description: 'Descent' },
+                        { code: 'EDL.3', description: 'Landing' },
+                        { code: 'EDL.4', description: 'Vehicle Systems' }
+                    ]
+                },
+                'AS': {
+                    name: 'Autonomous Systems',
+                    subdomains: [
+                        { code: 'AS.1', description: 'Situational & Self Awareness' },
+                        { code: 'AS.2', description: 'Reasoning & Acting' },
+                        { code: 'AS.3', description: 'Collaboration & Interaction' },
+                        { code: 'AS.4', description: 'Engineering & Integrity' }
+                    ]
+                },
+                'SMSIP': {
+                    name: 'Software, Modeling, Simulation & Information Processing',
+                    subdomains: [
+                        { code: 'SMSIP.1', description: 'Software Development & Integrity' },
+                        { code: 'SMSIP.2', description: 'Modeling' },
+                        { code: 'SMSIP.3', description: 'Simulation' },
+                        { code: 'SMSIP.4', description: 'Information Processing' },
+                        { code: 'SMSIP.5', description: 'Mission Architecture & Concept Development' },
+                        { code: 'SMSIP.6', description: 'Ground Computing' }
+                    ]
+                },
+                'MSMM': {
+                    name: 'Materials, Structures, Mechanical Systems & Manufacturing',
+                    subdomains: [
+                        { code: 'MSMM.1', description: 'Materials' },
+                        { code: 'MSMM.2', description: 'Structures' },
+                        { code: 'MSMM.3', description: 'Mechanical Systems' },
+                        { code: 'MSMM.4', description: 'Manufacturing' },
+                        { code: 'MSMM.5', description: 'Structural Dynamics' }
+                    ]
+                },
+                'GTSS': {
+                    name: 'Ground, Test & Surface Systems',
+                    subdomains: [
+                        { code: 'GTSS.1', description: 'Infrastructure Optimization' },
+                        { code: 'GTSS.2', description: 'Test & Qualification' },
+                        { code: 'GTSS.3', description: 'Assembly, Integration & Launch' },
+                        { code: 'GTSS.4', description: 'Mission Success Technologies' }
+                    ]
+                },
+                'TMS': {
+                    name: 'Thermal Management Systems',
+                    subdomains: [
+                        { code: 'TMS.1', description: 'Cryogenic Systems' },
+                        { code: 'TMS.2', description: 'Thermal Control Components' },
+                        { code: 'TMS.3', description: 'Thermal Protection Components' }
+                    ]
+                },
+                'FVS': {
+                    name: 'Flight Vehicle Systems',
+                    subdomains: [
+                        { code: 'FVS.1', description: 'Aerosciences' },
+                        { code: 'FVS.2', description: 'Flight Mechanics' }
+                    ]
+                },
+                'ATMRT': {
+                    name: 'Air Traffic Management & Range Tracking',
+                    subdomains: [
+                        { code: 'ATMRT.1', description: 'Safe All Vehicle Access' },
+                        { code: 'ATMRT.2', description: 'Weather/Environment' },
+                        { code: 'ATMRT.3', description: 'Traffic Management Concepts' },
+                        { code: 'ATMRT.4', description: 'Architectures & Infrastructure' },
+                        { code: 'ATMRT.5', description: 'Tracking, Surveillance & Flight Safety' },
+                        { code: 'ATMRT.6', description: 'Integrated Modeling, Simulation & Testing' }
+                    ]
+                },
+                'GNC': {
+                    name: 'Guidance, Navigation & Control (GN&C)',
+                    subdomains: [
+                        { code: 'GNC.1', description: 'Guidance & Targeting Algorithms' },
+                        { code: 'GNC.2', description: 'Navigation Technologies' },
+                        { code: 'GNC.3', description: 'Control Technologies' },
+                        { code: 'GNC.4', description: 'Attitude Estimation Technologies' },
+                        { code: 'GNC.5', description: 'GN&C Systems Engineering' },
+                        { code: 'GNC.6', description: 'Trajectory Generation & Optimization for Airspace' }
+                    ]
+                }
+            }
+        };
