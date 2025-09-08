@@ -218,7 +218,7 @@ def main():
     
     # 2. Preparar dados de treinamento
     print("🔧 Preparando dados para fine-tuning...")
-    dados_treinamento = preparar_dados_treinamento("Book1.csv")
+    dados_treinamento = preparar_dados_treinamento("final_aprovações_28_07_2025.csv")
     
     # 3. Fine-tuning (se houver dados suficientes)
     if len(dados_treinamento) >= 20:
