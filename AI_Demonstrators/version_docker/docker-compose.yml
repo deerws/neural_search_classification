@@ -1,0 +1,60 @@
+version: '3.8'
+services:
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: sc2c-aero-docker-php-1
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php:/var/www/html
+    depends_on:
+      - mysql
+      - python
+    networks:
+      - sc2c-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: sc2c-aero-docker-mysql-1
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_DATABASE: sc2c
+      MYSQL_USER: sc2c_user
+      MYSQL_PASSWORD: user1234
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - sc2c-network
+
+  python:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    container_name: sc2c-aero-docker-python-1
+    ports:
+      - "5000:5000"
+    networks:
+      - sc2c-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: sc2c-aero-docker-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: sc2c_user
+      PMA_PASSWORD: user1234
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - sc2c-network
+
+networks:
+  sc2c-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
