@@ -565,377 +565,54 @@ $error = $e->getMessage();
 <head>
     <!-- Versão alternativa para compatibilidade -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SC2C.Aero - Módulo de Aprovação</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Tema Escuro Uniforme - SC2C.Aero */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            padding: 20px;
-        }
+        @media (max-width: 768px) {
         .logo-title-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .buttons-container {
-            display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin: 20px 0;
+            text-align: center;
         }
-        .title-container h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
-            color: #4a86e8;
+        .download-buttons, .manual-buttons {
+            flex-direction: column;
+            align-items: center;
         }
         
-        /* Estilos para o modal no modo escuro */
-        #subdomainModal .modal-content {
-            background-color: #1e1e1e;
-            border: 1px solid #444;
-            color: #e0e0e0;
+        .download-buttons .btn, 
+        .manual-buttons .btn {
+            width: 100%;
+            margin-bottom: 10px;
         }
-
-        #subdomainModal .modal-header {
-            border-bottom: 1px solid #444;
-            background-color: #2a3f5f;
-            color: white;
-        }
-
-        #subdomainModal .modal-body {
-            background-color: #252525;
-        }
-
-        #subdomainModal .nav-tabs {
-            border-bottom: 1px solid #444;
-        }
-
-        #subdomainModal .nav-tabs > li > a {
-            color: #bbbbbb;
-            background-color: #333;
-            border: 1px solid #444;
-            margin-right: 5px;
-        }
-
-        #subdomainModal .nav-tabs > li.active > a,
-        #subdomainModal .nav-tabs > li.active > a:hover,
-        #subdomainModal .nav-tabs > li.active > a:focus {
-            color: #e0e0e0;
-            background-color: #252525;
-            border: 1px solid #444;
-            border-bottom-color: transparent;
-        }
-
-        #subdomainModal .well {
-            background-color: #2a2a2a;
-            border: 1px solid #444;
-        }
-
-        #subdomainModal .domain-section {
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
-        }
-
-        #subdomainModal .domain-header {
-            color: #4a86e8;
-            background-color: #2a2a2a;
-            border-radius: 4px;
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        #subdomainModal .domain-header:hover {
-            background-color: #333;
-        }
-
-        #subdomainModal .subdomain-item {
-            color: #d0d0d0;
-            border-left: 3px solid #444;
-            transition: all 0.3s;
-        }
-
-        #subdomainModal .subdomain-item:hover {
-            background-color: #333;
-            border-left-color: #4a86e8;
-        }
-
-        #subdomainModal .selected-item {
-            background-color: #2a3f5f;
-            color: white;
-            border-left-color: #5cb85c;
-        }
-
-        #subdomainModal .text-muted {
-            color: #777 !important;
-        }
-
-        #subdomainModal .modal-footer {
-            border-top: 1px solid #444;
-            background-color: #252525;
-        }
-
-        #subdomainModal .btn-default {
-            background-color: #5a6268;
-            color: white;
-            border: none;
-        }
-
-        #subdomainModal .btn-primary {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-        }
-
-        #subdomainModal .btn-danger {
-            background-color: #d32f2f;
-            color: white;
-            border: none;
-        }
-
-        /* Scrollbar para o modo escuro */
-        #subdomainModal ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #subdomainModal ::-webkit-scrollbar-track {
-            background: #2a2a2a;
-        }
-
-        #subdomainModal ::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 4px;
-        }
-
-        #subdomainModal ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-        .subtitle {
-            font-style: italic;
-            font-size: 18px;
-            color: #4A86E8;
-            margin-top: 0;
-        }
-        /* Adicione ao seu CSS existente */
-        .list-group-item {
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .list-group-item:hover {
-            background-color: #333333;
-        }
-        .list-group-item.active {
-            background-color: #337ab7;
-            color: white;
-            border-color: #337ab7;
-        }
-        .panel-heading {
-            cursor: pointer;
-        }
-        .subdomain-checkbox {
-            margin-right: 10px;
+        
+        .subdomain-container {
+            display: none;
+            flex-direction: column;
+            padding-left: 20px;
         }
         
         .header-container {
-            display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 25px;
         }
+        
         .header-logo {
-            width: 200px; /* Aumentado de 50px */
-            height: 200px; /* Aumentado de 50px */
+            width: 150px;
+            height: 150px;
         }
         
-        
-        .download-buttons, .manual-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        
-        .container {
-            max-width: none; /* Remove a limitação de 1800px */
-            width: 98%; /* Usa 98% da tela (deixa margem mínima) */
-            margin: 0 auto;
-            padding: 0 10px;
-        }
-        
-        .panel {
-            background-color: #1e1e1e;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid #333;
-        }
-        
-        .table-container {
-            overflow-x: visible; /* Elimina a rolagem horizontal */
-            overflow-y: auto; /* Mantém a rolagem vertical */
-            max-height: 75vh;
-            width: 100%;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #252525;
-        }
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-        }
-        
-        thead th {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: #1a3b6a;
-            color: white;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            border: 1px solid #252525;
-            text-align: left;
-            background-color: #252525;
-        }
-        
-        th {
-            background-color: #2a3f5f;
-            color: white;
-            font-weight: 600;
-        }
-        
-        tr {
-            background-color: #252525;
-        }
-        
-        tr:hover {
-            background-color: #2d2d2d;
-        }
-        
-        .classification {
-            margin-bottom: 10px;
-            padding: 12px;
-            border: 1px solid #444;
-            border-radius: 6px;
-            background-color: #2a2a2a;
-            position: relative;
-        }
-        
-        .approved {
-            background-color: #1a3a1a !important;
-        }
-        
-        .rejected {
-            background-color: #3a1a1a !important;
-        }
-        
-        .chart-container {
-            width: 100%;
-            height: 100px;
-            margin-top: 10px;
-        }
-        
-        /* Botões */
-        .btn-approve {
-            background-color: #388e3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            margin-right: 5px;
-        }
-        
-        .btn-reject {
-            background-color: #d32f2f;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        
-        .btn-approve:hover, .btn-reject:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        
-        .btn-default {
-            background-color: #5a6268;
-            color: white;
-        }
-        
-        .btn-primary {
-            background-color: #1976d2;
-            color: white;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin: 0 5px 10px;
-        }
-        
-        .btn-info {
-            background-color: #17a2b8;
-            color: white;
-        }
-        
-        .btn:hover {
-            opacity: 0.85;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        
-        /* Formulários */
-        .form-control {
-            background-color: #333;
-            color: white;
-            border: 1px solid #444;
-            border-radius: 4px;
-            padding: 10px;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        
-        .form-control:focus {
-            border-color: #1976d2;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
-        }
-        
-        /* Layout */
-        .text-center {
+        .title-container {
             text-align: center;
         }
         
         .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-right: -15px;
-            margin-left: -15px;
+            flex-direction: column;
         }
         
         .col-md-6 {
-            flex: 0 0 50%;
-            max-width: 50%;
+            flex: 0 0 100%;
+            max-width: 100%;
             padding: 0 15px;
         }
         
@@ -943,235 +620,616 @@ $error = $e->getMessage();
             margin-bottom: 20px;
         }
         
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #bbbbbb;
-            font-weight: 500;
-        }
-        
-        /* Títulos */
-        h1, h2, h3 {
-            color: #e0e0e0;
-            margin-top: 0;
-        }
-        
-        h1 {
-            font-size: 28px;
-            margin-bottom: 25px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            color: #4a86e8;
-        }
-        
-        /* Painéis */
-        .panel-heading {
-            background-color: #2a3f5f;
-            color: white;
-            padding: 12px 20px;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
-            font-weight: 600;
-            font-size: 18px;
-        }
-        
-        .panel-body {
-            padding: 20px;
-            background-color: #252525;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-        }
-        
-        .panel-default {
-            border: 1px solid #444;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        
-        /* Listas */
-        ul {
-            padding-left: 20px;
-            margin-bottom: 0;
-        }
-        
-        li {
-            margin-bottom: 8px;
-            color: #d0d0d0;
-        }
-        
-        /* Botões pequenos */
-        .btn-xs {
-            padding: 5px 10px;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-        
-        .btn-feedback, .btn-add-subdomain {
-            margin-top: 8px;
-            width: 100%;
-            padding: 8px 12px;
-            font-size: 13px;
-        }
-        
-        /* Barra de rolagem */
-        .table-container::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        
-        .table-container::-webkit-scrollbar-track {
-            background: #2a2a2a;
-            border-radius: 10px;
-        }
-        
-        .table-container::-webkit-scrollbar-thumb {
-            background: #4a4a4a;
-            border-radius: 10px;
-        }
-        
-        .table-container::-webkit-scrollbar-thumb:hover {
-            background: #5a5a5a;
-        }
-        
-        /* Transições */
-        * {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        /* Cabeçalho fixo */
-        thead th {
-            transition: background-color 0.3s ease;
-        }
-        
-        thead th:hover {
-            background-color: #1f3250;
-        }
-        
-        /* Modais */
-        .modal-content {
-            background-color: #252525;
-            color: #252525;
-            border: 1px solid #444;
-        }
-        
-        .modal-header, .modal-footer {
-            border-color: #444;
-        }
-        
-        .close {
-            color: #e0e0e0;
-            opacity: 0.8;
-        }
-        
-        .nav-tabs > li.active > a {
-            background-color: #252525;
-            color: #e0e0e0;
-            border: 1px solid #444;
-            border-bottom-color: transparent;
-        }
-        
-        .nav-tabs > li > a {
-            color: #bbbbbb;
-        }
-        
-        /* Estilo para o modal de subdomínio */
-        .subdomain-item {
-            padding: 8px;
-            margin: 5px 0;
-            background-color: #333;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .subdomain-item:hover {
-            background-color: #3a3a3a;
-        }
-        
-        .subdomain-item input[type="radio"] {
-            margin-right: 8px;
-        }
-        /* Estilos para o modal simplificado */
-        .domain-section {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .subdomain-item {
-            transition: all 0.2s;
-        }
-
-        .subdomain-item:hover {
-            background-color: #252525;
-        }
-
-        .modal-footer {
-            padding: 15px;
-            border-top: 1px solid #252525;
-            display: flex;
-            justify-content: space-between;
+        .buttons-container {
+            flex-direction: column;
             align-items: center;
         }
-
-        .well {
-            background-color: #252525;
-            border-radius: 4px;
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            min-width: 600px;
+        }
+        
+        th, td {
+            white-space: nowrap;
+        }
+        
+        .panel {
             padding: 15px;
-            margin-top: 15px;
         }
-        
-        /* Estilo para os domínios expandíveis */
-        .domain-toggle {
-            cursor: pointer;
-            display: block;
-            width: 90%;
-            padding: 10px 20px;
-            margin: 5px 0;
-            background-color: rgba(56,104,145);
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            text-align: left;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .btn-warning {
-            background-color: #ffc107;
-            color: #212529;
-        }
+    }
 
-        .btn-clear-selections {
-            width: 100%;
-            margin-top: 5px;
-        }
-        
-        .domain-toggle:hover {
-            background-color: #0056b3;
-        }
-        @media (max-width: 768px) {
-            .logo-title-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .download-buttons, .manual-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .download-buttons .btn, 
-            .manual-buttons .btn {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-        
-        .subdomain-container {
-            display: none;
-            flex-direction: column;
-            padding-left: 20px;
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #e0e0e0;
+        padding: 20px;
+    }
 
-        }
+    .logo-title-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .buttons-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .title-container h1 {
+        font-size: 28px;
+        margin-bottom: 5px;
+        color: #4a86e8;
+    }
+
+    /* Estilos para o modal no modo escuro */
+    #subdomainModal .modal-content {
+        background-color: #1e1e1e;
+        border: 1px solid #444;
+        color: #e0e0e0;
+    }
+
+    #subdomainModal .modal-header {
+        border-bottom: 1px solid #444;
+        background-color: #2a3f5f;
+        color: white;
+    }
+
+    #subdomainModal .modal-body {
+        background-color: #252525;
+    }
+
+    #subdomainModal .nav-tabs {
+        border-bottom: 1px solid #444;
+    }
+
+    #subdomainModal .nav-tabs > li > a {
+        color: #bbbbbb;
+        background-color: #333;
+        border: 1px solid #444;
+        margin-right: 5px;
+    }
+
+    #subdomainModal .nav-tabs > li.active > a,
+    #subdomainModal .nav-tabs > li.active > a:hover,
+    #subdomainModal .nav-tabs > li.active > a:focus {
+        color: #e0e0e0;
+        background-color: #252525;
+        border: 1px solid #444;
+        border-bottom-color: transparent;
+    }
+
+    #subdomainModal .well {
+        background-color: #2a2a2a;
+        border: 1px solid #444;
+    }
+
+    #subdomainModal .domain-section {
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+    }
+
+    #subdomainModal .domain-header {
+        color: #4a86e8;
+        background-color: #2a2a2a;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    #subdomainModal .domain-header:hover {
+        background-color: #333;
+    }
+
+    #subdomainModal .subdomain-item {
+        color: #d0d0d0;
+        border-left: 3px solid #444;
+        transition: all 0.3s;
+    }
+
+    #subdomainModal .subdomain-item:hover {
+        background-color: #333;
+        border-left-color: #4a86e8;
+    }
+
+    #subdomainModal .selected-item {
+        background-color: #2a3f5f;
+        color: white;
+        border-left-color: #5cb85c;
+    }
+
+    #subdomainModal .text-muted {
+        color: #777 !important;
+    }
+
+    #subdomainModal .modal-footer {
+        border-top: 1px solid #444;
+        background-color: #252525;
+    }
+
+    #subdomainModal .btn-default {
+        background-color: #5a6268;
+        color: white;
+        border: none;
+    }
+
+    #subdomainModal .btn-primary {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+    }
+
+    #subdomainModal .btn-danger {
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+    }
+
+    /* Scrollbar para o modo escuro */
+    #subdomainModal ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #subdomainModal ::-webkit-scrollbar-track {
+        background: #2a2a2a;
+    }
+
+    #subdomainModal ::-webkit-scrollbar-thumb {
+        background: #444;
+        border-radius: 4px;
+    }
+
+    #subdomainModal ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .subtitle {
+        font-style: italic;
+        font-size: 18px;
+        color: #4A86E8;
+        margin-top: 0;
+    }
+
+    /* Adicione ao seu CSS existente */
+    .list-group-item {
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .list-group-item:hover {
+        background-color: #333333;
+    }
+
+    .list-group-item.active {
+        background-color: #337ab7;
+        color: white;
+        border-color: #337ab7;
+    }
+
+    .panel-heading {
+        cursor: pointer;
+    }
+
+    .subdomain-checkbox {
+        margin-right: 10px;
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .header-logo {
+        width: 200px;
+        height: 200px;
+    }
+
+    .download-buttons, .manual-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .container {
+        max-width: none;
+        width: 98%;
+        margin: 0 auto;
+        padding: 0 10px;
+    }
+
+    .panel {
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        padding: 25px;
+        margin-bottom: 25px;
+        border: 1px solid #333;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 75vh;
+        width: 100%;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #252525;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    thead th {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background-color: #1a3b6a;
+        color: white;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid #252525;
+        text-align: left;
+        background-color: #252525;
+    }
+
+    th {
+        background-color: #2a3f5f;
+        color: white;
+        font-weight: 600;
+    }
+
+    tr {
+        background-color: #252525;
+    }
+
+    tr:hover {
+        background-color: #2d2d2d;
+    }
+
+    .classification {
+        margin-bottom: 10px;
+        padding: 12px;
+        border: 1px solid #444;
+        border-radius: 6px;
+        background-color: #2a2a2a;
+        position: relative;
+    }
+
+    .approved {
+        background-color: #1a3a1a !important;
+    }
+
+    .rejected {
+        background-color: #3a1a1a !important;
+    }
+
+    .chart-container {
+        width: 100%;
+        height: 100px;
+        margin-top: 10px;
+    }
+
+    /* Botões */
+    .btn-approve {
+        background-color: #388e3c;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-right: 5px;
+    }
+
+    .btn-reject {
+        background-color: #d32f2f;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .btn-approve:hover, .btn-reject:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    .btn-default {
+        background-color: #5a6268;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #1976d2;
+        color: white;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin: 0 5px 10px;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.85;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Formulários */
+    .form-control {
+        background-color: #333;
+        color: white;
+        border: 1px solid #444;
+        border-radius: 4px;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .form-control:focus {
+        border-color: #1976d2;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
+    }
+
+    /* Layout */
+    .text-center {
+        text-align: center;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 15px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #bbbbbb;
+        font-weight: 500;
+    }
+
+    /* Títulos */
+    h1, h2, h3 {
+        color: #e0e0e0;
+        margin-top: 0;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 25px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        color: #4a86e8;
+    }
+
+    /* Painéis */
+    .panel-heading {
+        background-color: #2a3f5f;
+        color: white;
+        padding: 12px 20px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .panel-body {
+        padding: 20px;
+        background-color: #252525;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .panel-default {
+        border: 1px solid #444;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    /* Listas */
+    ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+
+    li {
+        margin-bottom: 8px;
+        color: #d0d0d0;
+    }
+
+    /* Botões pequenos */
+    .btn-xs {
+        padding: 5px 10px;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .btn-feedback, .btn-add-subdomain {
+        margin-top: 8px;
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    /* Barra de rolagem */
+    .table-container::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+        background: #2a2a2a;
+        border-radius: 10px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+        background: #4a4a4a;
+        border-radius: 10px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+        background: #5a5a5a;
+    }
+
+    /* Transições */
+    * {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Cabeçalho fixo */
+    thead th {
+        transition: background-color 0.3s ease;
+    }
+
+    thead th:hover {
+        background-color: #1f3250;
+    }
+
+    /* Modais */
+    .modal-content {
+        background-color: #252525;
+        color: #252525;
+        border: 1px solid #444;
+    }
+
+    .modal-header, .modal-footer {
+        border-color: #444;
+    }
+
+    .close {
+        color: #e0e0e0;
+        opacity: 0.8;
+    }
+
+    .nav-tabs > li.active > a {
+        background-color: #252525;
+        color: #e0e0e0;
+        border: 1px solid #444;
+        border-bottom-color: transparent;
+    }
+
+    .nav-tabs > li > a {
+        color: #bbbbbb;
+    }
+
+    /* Estilo para o modal de subdomínio */
+    .subdomain-item {
+        padding: 8px;
+        margin: 5px 0;
+        background-color: #333;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .subdomain-item:hover {
+        background-color: #3a3a3a;
+    }
+
+    .subdomain-item input[type="radio"] {
+        margin-right: 8px;
+    }
+
+    /* Estilos para o modal simplificado */
+    .domain-section {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .subdomain-item {
+        transition: all 0.2s;
+    }
+
+    .subdomain-item:hover {
+        background-color: #252525;
+    }
+
+    .modal-footer {
+        padding: 15px;
+        border-top: 1px solid #252525;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .well {
+        background-color: #252525;
+        border-radius: 4px;
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    /* Estilo para os domínios expandíveis */
+    .domain-toggle {
+        cursor: pointer;
+        display: block;
+        width: 90%;
+        padding: 10px 20px;
+        margin: 5px 0;
+        background-color: rgba(56,104,145);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: left;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .btn-clear-selections {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .domain-toggle:hover {
+        background-color: #0056b3;
     }
     </style>
 </head>
