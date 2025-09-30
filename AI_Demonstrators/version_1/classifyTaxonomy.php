@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 include('loginCheck.php');
 include('DBconnect.php');
 
+
 $results = [];
 $errors = [];
 
@@ -167,4 +168,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitClassification'
 
     <?php include('footer.php') ?>
 </body>
+
 </html>
